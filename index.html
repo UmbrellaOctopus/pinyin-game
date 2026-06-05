@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ 汉语拼音大冒险 ⚡</title>
+    <style>
+        /* 缤纷可爱 cool 风格设计 */
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f0fdf4; /* 温和的浅绿色背景，保护眼睛 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .game-container {
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.05);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            border: 4px solid #bbf7d0; /* 粉绿色边框 */
+        }
+
+        h1 {
+            color: #16a34a;
+            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .score-board {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .word-display {
+            font-size: 64px; /* 超大中文字 */
+            font-weight: bold;
+            color: #1e293b;
+            margin: 20px 0;
+            letter-spacing: 4px;
+        }
+
+        .pinyin-hint {
+            font-size: 20px;
+            color: #94a3b8;
+            height: 30px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .input-box {
+            font-size: 24px;
+            padding: 12px 20px;
+            width: 80%;
+            border: 3px solid #cbd5e1;
+            border-radius: 16px;
+            text-align: center;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .input-box:focus {
+            border-color: #4ade80;
+            box-shadow: 0 0 10px rgba(74, 222, 128, 0.2);
+        }
+
+        /* 答题反馈泡泡 */
+        .feedback {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .correct {
+            color: #15803d;
+            background-color: #dcfce7;
+        }
+
+        .wrong {
+            color: #1d4ed8;
+            background-color: #dbeafe;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>⚡ 汉语拼音大冒险 ⚡</h1>
+        <div class="score-board">⭐ 已挑战：<span id="score">0</span> 题</div>
+        
+        <!-- 中文字显示区 -->
+        <div class="word-display" id="word">你好</div>
+        
+        <!-- 拼音提示（含声调，辅助学习） -->
+        <div class="pinyin-hint" id="hint">提示：nǐ hǎo</div>
+
+        <!-- 输入框 -->
+        <input type="text" id="pinyin-input" class="input-box" placeholder="在这里输入拼音..." autocomplete="off" autofocus>
+        
+        <!-- 结果反馈 -->
+        <div id="feedback" class="feedback"></div>
+    </div>
+
+    <script>
+        // 适合 K-8 学生的常用简体词库 (中文字, 正确输入码, 画面提示)
+        const questionBank = [
+            { word: "你好", answer: "nihao", hint: "nǐ hǎo" },
+            { word: "谢谢", answer: "xiexie", hint: "xiè xie" },
+            { word: "老师", answer: "laoshi", hint: "lǎo shī" },
+            { word: "学生", answer: "xuesheng", hint: "xué sheng" },
+            { word: "学校", answer: "xuexiao", hint: "xué xiào" },
+            { word: "电脑", answer: "diannao", hint: "diàn nǎo" },
+            { word: "高兴", answer: "gaoxing", hint: "gāo xìng" },
+            { word: "朋友", answer: "pengyou", hint: "péng you" },
+            { word: "苹果", answer: "pingguo", hint: "píng guǒ" },
+            { word: "喜欢", answer: "xihuan", hint: "xǐ huan" }
+        ];
+
+        let currentQuestion = {};
+        let score = 0;
+
+        const wordEl = document.getElementById('word');
+        const hintEl = document.getElementById('hint');
+        const inputEl = document.getElementById('pinyin-input');
+        const feedbackEl = document.getElementById('feedback');
+        const scoreEl = document.getElementById('score');
+
+        // 随机选一题
+        function nextQuestion() {
+            inputEl.value = '';
+            feedbackEl.className = 'feedback';
+            feedbackEl.innerText = '';
+            
+            const randomIndex = Math.floor(Math.random() * questionBank.length);
+            currentQuestion = questionBank[randomIndex];
+            
+            wordEl.innerText = currentQuestion.word;
+            hintEl.innerText = `提示：${currentQuestion.hint}`;
+        }
+
+        // 监听输入框
+        inputEl.addEventListener('input', (e) => {
+            const userInput = e.target.value.toLowerCase().trim();
+            const targetAnswer = currentQuestion.answer;
+
+            // 当用户输入长度跟答案一样时，进行自动判定
+            if (userInput.length === targetAnswer.length) {
+                if (userInput === targetAnswer) {
+                    // 答对了！
+                    feedbackEl.className = 'feedback correct';
+                    feedbackEl.innerText = '🎉 太棒了！答对啰！';
+                    score++;
+                    scoreEl.innerText = score;
+                    
+                    // 延迟 1.2 秒后自动下一题
+                    setTimeout(nextQuestion, 1200);
+                } else {
+                    // 答错了
+                    feedbackEl.className = 'feedback wrong';
+                    feedbackEl.innerText = `💡 试试看输入: ${targetAnswer}`;
+                }
+            }
+        });
+
+        // 游戏开始
+        nextQuestion();
+    </script>
+</body>
+</html>
