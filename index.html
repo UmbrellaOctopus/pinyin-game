@@ -162,13 +162,15 @@
             font-size: 18px;
             font-weight: bold;
             min-height: 45px;
-            padding: 5px 10px;
+            padding: 8px 12px;
             line-height: 35px;
             border-radius: 12px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .correct { 
@@ -179,6 +181,39 @@
         .wrong { 
             color: #b91c1c; 
             background-color: #fee2e2; 
+        }
+
+        /* 按钮通用样式 */
+        .action-btn {
+            background-color: #22c55e;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+
+        .action-btn:hover {
+            background-color: #16a34a;
+        }
+
+        .action-btn.secondary {
+            background-color: #64748b;
+        }
+
+        .action-btn.secondary:hover {
+            background-color: #475569;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
         }
 
         .hidden { 
@@ -213,22 +248,38 @@
 
         <!-- 游戏核心卡片 -->
         <div class="game-container" id="game-card">
-            <div class="score-board">⭐ 已挑战：<span id="score">0</span> 题</div>
-            <div class="mode-title" id="current-mode-name">随机拼字练习（无声调）</div>
-            
-            <!-- 出题字 -->
-            <div class="word-display" id="word-target">眼睛</div>
-            
-            <!-- 输入框 -->
-            <input type="text" id="pinyin-input" class="input-box" placeholder="在这里输入拼音..." autocomplete="off" autofocus>
-            
-            <!-- 结果回馈 -->
-            <div id="feedback" class="feedback"></div>
+            <!-- 答题进行中界面 -->
+            <div id="quiz-box">
+                <div class="score-board">🚩 进度：第 <span id="current-index">1</span> / 20 题 | 正确：<span id="score">0</span> 题</div>
+                <div class="mode-title" id="current-mode-name">随机拼字练习（无声调）</div>
+                
+                <!-- 出题字 -->
+                <div class="word-display" id="word-target">眼睛</div>
+                
+                <!-- 输入框 -->
+                <input type="text" id="pinyin-input" class="input-box" placeholder="在这里输入拼音..." autocomplete="off" autofocus>
+                
+                <!-- 结果回馈 -->
+                <div id="feedback" class="feedback"></div>
+            </div>
+
+            <!-- 20 题挑战结束结算界面 -->
+            <div id="result-box" class="hidden">
+                <h2 style="font-size: 28px; color: #16a34a; margin-bottom: 10px;">🏆 挑战完成！</h2>
+                <div style="font-size: 22px; font-weight: bold; margin: 20px 0; color: #334155;">
+                    本次成绩：<span id="final-score" style="color: #2563eb; font-size: 32px;">0/20</span>
+                </div>
+                <p style="font-size: 18px; color: #475569; margin-bottom: 20px;">是否要继续挑战下一轮？</p>
+                <div class="btn-group">
+                    <button class="action-btn" onclick="restartChallenge()">是 (继续挑战)</button>
+                    <button class="action-btn secondary" onclick="goHome()">否 (返回主页)</button>
+                </div>
+            </div>
         </div>
     </div>
 
 <script>
-    // 提取并去重后的限定词库（包含 G1-G8 与 WLP 初中高级的所有字词）
+    // 限定词库（包含 G1-G8 与 WLP 初中高级的所有字词）
     const customWordList = [
         "眼睛", "鼻子", "嘴巴", "手", "头", "脚", "耳朵", "爷爷", "奶奶", "爸爸", "妈妈", "哥哥", "姐姐", "弟弟", "妹妹",
         "我", "你", "爱", "家", "苹果", "草莓", "香蕉", "葡萄", "桔子", "梨", "西瓜", "红色", "黄色", "蓝色", "绿色",
@@ -350,7 +401,7 @@
             { word: "昂", ans: "ang" }, { word: "亨", ans: "eng" }, { word: "英", ans: "ing" }, { word: "轰", ans: "ong" }
         ],
         "zhi整体": [
-            { word: "织", ans: "zhi" }, { word: "吃", ans: "chi" }, { word: "狮", ans: "shi" }, { word: "日", ans: "ri" },
+            { word: "织", ans: "zhi" }, { word: "吃", ans: "chi" }, { word: "shi", ans: "shi" }, { word: "日", ans: "ri" },
             { word: "字", ans: "zi" }, { word: "词", ans: "ci" }, { word: "丝", ans: "si" }, { word: "医", ans: "yi" },
             { word: "巫", ans: "wu" }, { word: "淤", ans: "yu" }, { word: "夜", ans: "ye" }, { word: "月", ans: "yue" },
             { word: "圆", ans: "yuan" }, { word: "音", ans: "yin" }, { word: "云", ans: "yun" }, { word: "影", ans: "ying" }
@@ -361,9 +412,10 @@
     let currentMode = 1; 
     let currentSubCategory = "sh聲母";
     let currentQuestion = {};
-    let score = 0;
-    let wrongList = []; // 错题本库
-    let wrongCount = 0;  // 当前题目连续答错次数计数器
+    let score = 0;              // 当前答对题数
+    let totalAsked = 0;         // 当前已出的题数（上限 20）
+    let wrongList = [];         // 错题本库
+    let wrongCount = 0;         // 当前题目连续答错次数
 
     // DOM 元素
     const modeTitleEl = document.getElementById('current-mode-name');
@@ -371,50 +423,59 @@
     const inputEl = document.getElementById('pinyin-input');
     const feedbackEl = document.getElementById('feedback');
     const scoreEl = document.getElementById('score');
+    const currentIndexEl = document.getElementById('current-index');
     const subMenuEl = document.getElementById('sub-menu');
+    const quizBoxEl = document.getElementById('quiz-box');
+    const resultBoxEl = document.getElementById('result-box');
+    const finalScoreEl = document.getElementById('final-score');
 
-    // 拼音转换工具，利用 pinyin-pro 将汉字转化为无声调/带声调拼音
+    // 拼音转换工具
     function getPinyin(word, withTone) {
         if (typeof pinyinPro !== 'undefined') {
             if (withTone) {
-                // 带数字声调，例如 "ni3hao3"
                 return pinyinPro.pinyin(word, { toneType: 'num', type: 'array' }).join('');
             } else {
-                // 不带声调，例如 "nihao"
                 return pinyinPro.pinyin(word, { toneType: 'none', type: 'array' }).join('');
             }
         }
         return "";
     }
 
-    // 2. 模式切换
+    // 重置 20 题局数
+    function resetChallenge() {
+        score = 0;
+        totalAsked = 0;
+        scoreEl.innerText = score;
+        quizBoxEl.classList.remove('hidden');
+        resultBoxEl.classList.add('hidden');
+    }
+
+    // 切换模式
     function switchMode(modeNum) {
         currentMode = modeNum;
         
-        // 更新左侧按钮高亮
         const buttons = document.querySelectorAll('.menu-btn');
         buttons.forEach((btn, idx) => {
             if (idx === modeNum - 1) btn.classList.add('active');
             else btn.classList.remove('active');
         });
 
-        // 控制模式三子菜单显示
         if (modeNum === 3) {
             subMenuEl.classList.remove('hidden');
         } else {
             subMenuEl.classList.add('hidden');
         }
 
-        // 更新标题与出题
         if (modeNum === 1) modeTitleEl.innerText = "随机拼字练习（无声调）";
         if (modeNum === 2) modeTitleEl.innerText = "随机拼字练习（加入声调，例: ni3hao3）";
         if (modeNum === 3) modeTitleEl.innerText = "特定声母、韵母练习";
         if (modeNum === 4) modeTitleEl.innerText = "错题本（加强练习）";
 
+        resetChallenge();
         nextQuestion();
     }
 
-    // 模式三专属：切换子分类
+    // 切换子分类
     function switchSubCategory(catName) {
         currentSubCategory = catName;
         const subBtns = document.querySelectorAll('.sub-btn');
@@ -430,26 +491,31 @@
                 btn.classList.remove('active');
             }
         });
+        resetChallenge();
         nextQuestion();
     }
 
-    // 3. 出题逻辑
+    // 出题逻辑
     function nextQuestion() {
-        // 重置状态
+        // 判断是否已完成 20 题
+        if (totalAsked >= 20) {
+            showResult();
+            return;
+        }
+
+        totalAsked++;
+        currentIndexEl.innerText = totalAsked;
         wrongCount = 0;
         inputEl.value = '';
         inputEl.disabled = false;
         feedbackEl.className = 'feedback';
-        feedbackEl.innerText = '';
+        feedbackEl.innerHTML = '';
 
         if (currentMode === 1 || currentMode === 2) {
             const r = Math.floor(Math.random() * customWordList.length);
             const targetWord = customWordList[r];
             const pinyinAns = getPinyin(targetWord, currentMode === 2);
-            currentQuestion = {
-                word: targetWord,
-                answer: pinyinAns
-            };
+            currentQuestion = { word: targetWord, answer: pinyinAns };
         } else if (currentMode === 3) {
             const list = categoryBank[currentSubCategory];
             const r = Math.floor(Math.random() * list.length);
@@ -472,7 +538,25 @@
         inputEl.focus();
     }
 
-    // 4. 输入判定逻辑（按 Enter 判定）
+    // 显示 20 题结算结果
+    function showResult() {
+        quizBoxEl.classList.add('hidden');
+        resultBoxEl.classList.remove('hidden');
+        finalScoreEl.innerText = `${score}/20`;
+    }
+
+    // 结算画面选择：“是”（重新开始挑战）
+    function restartChallenge() {
+        resetChallenge();
+        nextQuestion();
+    }
+
+    // 结算画面选择：“否”（返回主页模式 1）
+    function goHome() {
+        switchMode(1);
+    }
+
+    // 输入判定（按 Enter 判定）
     inputEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             const userInput = inputEl.value.toLowerCase().trim();
@@ -485,36 +569,34 @@
                 score++;
                 scoreEl.innerText = score;
 
-                // 如果在错题本里答对，就从错题本移出
                 if (currentMode === 4) {
                     wrongList = wrongList.filter(item => !(item.word === currentQuestion.word && item.answer === currentQuestion.answer));
                 }
                 
-                inputEl.disabled = true; // 答对后暂停输入
+                inputEl.disabled = true;
                 setTimeout(nextQuestion, 1000);
             } else {
-                // 答错了，增加错误计数
+                // 答错了
                 wrongCount++;
-                inputEl.value = ''; // 自动清空输入框方便再次输入
+                inputEl.value = '';
 
                 if (wrongCount < 3) {
-                    // 答错第 1、2 次：不给答案，只提示再试一次
                     feedbackEl.className = 'feedback wrong';
                     feedbackEl.innerText = `❌ 答错啰 (${wrongCount}/3 次)，再试一次看看！`;
                 } else {
-                    // 答错第 3 次：显示答案、加入错题本，并跳下一题
+                    // 答错第 3 次：显示正确答案，并提供“继续挑战”按钮让学生自由停留
                     feedbackEl.className = 'feedback wrong';
-                    feedbackEl.innerText = `💡 答错 3 次啰！正确答案是: ${targetAnswer}`;
-                    inputEl.disabled = true; // 暂停输入
+                    feedbackEl.innerHTML = `
+                        <div>💡 答错 3 次啰！正确答案是: <strong>${targetAnswer}</strong></div>
+                        <button class="action-btn" style="margin-top:8px;" onclick="nextQuestion()">继续挑战 ➔</button>
+                    `;
+                    inputEl.disabled = true;
 
-                    // 放入错题本（如果不是在错题本模式下，且尚未存在）
+                    // 加入错题本
                     const alreadyIn = wrongList.some(item => item.word === currentQuestion.word && item.answer === targetAnswer);
                     if (!alreadyIn && currentMode !== 4) {
                         wrongList.push({ word: currentQuestion.word, answer: targetAnswer });
                     }
-
-                    // 留 2.5 秒给学生看正确答案后自动跳下一题
-                    setTimeout(nextQuestion, 2500);
                 }
             }
         }
