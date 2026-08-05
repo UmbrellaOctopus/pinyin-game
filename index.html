@@ -231,6 +231,29 @@
             background-color: #fee2e2; 
         }
 
+        /* 分析框样式 */
+        .analysis-box {
+            background-color: #f8fafc;
+            border: 2px dashed #94a3b8;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .analysis-item {
+            font-size: 16px;
+            color: #334155;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .analysis-tag {
+            font-weight: bold;
+            color: #dc2626;
+        }
+
         /* 按钮通用样式 */
         .action-btn {
             background-color: #22c55e;
@@ -268,7 +291,7 @@
             display: none !important; 
         }
     </style>
-    <!-- 引入 pinyin-pro 用于自动将文本转换成带声调/不带声调的拼音 -->
+    <!-- 引入 pinyin-pro 用于自动解析拼音要素 -->
     <script src="https://unpkg.com/pinyin-pro@3.18.3/dist/index.js"></script>
 </head>
 <body>
@@ -324,13 +347,22 @@
                 <div id="feedback" class="feedback"></div>
             </div>
 
-            <!-- 2. 10 题挑战结束结算界面 -->
+            <!-- 2. 10 题挑战结束结算与分析界面 -->
             <div id="result-box" class="hidden">
-                <h2 style="font-size: 28px; color: #16a34a; margin-bottom: 10px;">🏆 挑战完成！</h2>
-                <div style="font-size: 22px; font-weight: bold; margin: 20px 0; color: #334155;">
+                <h2 style="font-size: 28px; color: #16a34a; margin-bottom: 5px;">🏆 挑战完成！</h2>
+                <div style="font-size: 22px; font-weight: bold; margin: 10px 0; color: #334155;">
                     本次成绩：<span id="final-score" style="color: #2563eb; font-size: 32px;">0/10</span>
                 </div>
-                <p style="font-size: 18px; color: #475569; margin-bottom: 20px;">是否要继续挑战下一轮？</p>
+
+                <!-- 📊 练习分析区域 -->
+                <div class="analysis-box">
+                    <h3 style="margin-top:0; color:#1e293b; font-size:18px;">📊 学习大冒险分析报告：</h3>
+                    <div id="analysis-content">
+                        <!-- 动态生成的错题分析文本 -->
+                    </div>
+                </div>
+
+                <p style="font-size: 18px; color: #475569; margin-bottom: 15px;">要继续挑战下一轮吗？</p>
                 <div class="btn-group">
                     <button class="action-btn" onclick="restartChallenge()">是 (继续挑战)</button>
                     <button class="action-btn secondary" onclick="goHome()">否 (返回主页)</button>
@@ -340,6 +372,16 @@
     </div>
 
 <script>
+    // 基础分类表，用于分析拼音要素
+    const pinyinCategories = {
+        zhi: ["zhi", "chi", "shi", "ri", "zi", "ci", "si", "yi", "wu", "yu", "ye", "yue", "yuan", "yin", "yun", "ying"],
+        houBi: ["ang", "eng", "ing", "ong"],
+        qianBi: ["an", "en", "in", "un", "ün", "vn"],
+        fu: ["ai", "ei", "ui", "ao", "ou", "iu", "ie", "üe", "ve", "er"],
+        dan: ["a", "o", "e", "i", "u", "ü", "v"],
+        shengmu: ["b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w"]
+    };
+
     // 限定词库（包含 G1-G8 与 WLP 初中高级的所有字词）
     const customWordList = [
         "眼睛", "鼻子", "嘴巴", "手", "头", "脚", "耳朵", "爷爷", "奶奶", "爸爸", "妈妈", "哥哥", "姐姐", "弟弟", "妹妹",
@@ -470,13 +512,16 @@
     };
 
     // 状态变量
-    let currentMode = 0; // 0 代表首页欢迎画面
+    let currentMode = 0;
     let currentSubCategory = "sh聲母";
     let currentQuestion = {};
-    let score = 0;              // 当前答对题数
-    let totalAsked = 0;         // 当前已出的题数（上限 10）
-    let wrongList = [];         // 错题本库
-    let wrongCount = 0;         // 当前题目连续答错次数
+    let score = 0;
+    let totalAsked = 0;
+    let wrongList = [];
+    let wrongCount = 0;
+
+    // 记录本局 10 题中的错题要素统计
+    let currentSessionErrors = [];
 
     // DOM 元素
     const homeBoxEl = document.getElementById('home-box');
@@ -490,6 +535,7 @@
     const currentIndexEl = document.getElementById('current-index');
     const subMenuEl = document.getElementById('sub-menu');
     const finalScoreEl = document.getElementById('final-score');
+    const analysisContentEl = document.getElementById('analysis-content');
 
     // 拼音转换工具
     function getPinyin(word, withTone) {
@@ -507,6 +553,7 @@
     function resetChallenge() {
         score = 0;
         totalAsked = 0;
+        currentSessionErrors = []; // 清空本局错题纪录
         scoreEl.innerText = score;
         homeBoxEl.classList.add('hidden');
         quizBoxEl.classList.remove('hidden');
@@ -589,12 +636,12 @@
             const r = Math.floor(Math.random() * customWordList.length);
             const targetWord = customWordList[r];
             const pinyinAns = getPinyin(targetWord, currentMode === 2);
-            currentQuestion = { word: targetWord, answer: pinyinAns };
+            currentQuestion = { word: targetWord, answer: pinyinAns, category: null };
         } else if (currentMode === 3) {
             const list = categoryBank[currentSubCategory];
             const r = Math.floor(Math.random() * list.length);
             const q = list[r];
-            currentQuestion = { word: q.word, answer: q.ans };
+            currentQuestion = { word: q.word, answer: q.ans, category: currentSubCategory };
         } else if (currentMode === 4) {
             if (wrongList.length === 0) {
                 wordTargetEl.innerText = "🎉";
@@ -612,11 +659,94 @@
         inputEl.focus();
     }
 
-    // 显示 10 题结算结果
+    // 💡 错题分类解析算法
+    function analyzePinyinCategory(item) {
+        if (item.category) {
+            // 如果是在模式 3 中错的，直接用选择的分类
+            const mapName = {
+                'sh聲母': '声母',
+                'dan韻母': '单韵母',
+                'fu韻母': '复韵母',
+                'qianBi韻母': '前鼻韵母',
+                'houBi韻母': '后鼻韵母',
+                'zhi整体': '整体认读音节'
+            };
+            return mapName[item.category] || '拼音基础';
+        }
+
+        // 去除数字声调进行文本分析
+        const cleanAns = item.answer.replace(/[0-9]/g, '').toLowerCase();
+
+        // 1. 检查是否包含整体认读音节
+        for (let py of pinyinCategories.zhi) {
+            if (cleanAns.includes(py)) return "整体认读音节";
+        }
+        // 2. 检查后鼻韵母
+        for (let py of pinyinCategories.houBi) {
+            if (cleanAns.includes(py)) return "后鼻韵母";
+        }
+        // 3. 检查前鼻韵母
+        for (let py of pinyinCategories.qianBi) {
+            if (cleanAns.includes(py)) return "前鼻韵母";
+        }
+        // 4. 检查复韵母
+        for (let py of pinyinCategories.fu) {
+            if (cleanAns.includes(py)) return "复韵母";
+        }
+        // 5. 检查单韵母
+        for (let py of pinyinCategories.dan) {
+            if (cleanAns.includes(py)) return "单韵母";
+        }
+        // 6. 默认归类为声母或基础
+        return "声母/拼读";
+    }
+
+    // 显示 10 题结算结果及分析
     function showResult() {
         quizBoxEl.classList.add('hidden');
         resultBoxEl.classList.remove('hidden');
         finalScoreEl.innerText = `${score}/10`;
+
+        // 📊 分析生成
+        if (currentSessionErrors.length === 0) {
+            analysisContentEl.innerHTML = `
+                <p style="color: #16a34a; font-weight: bold; font-size: 18px; margin: 10px 0;">
+                    🌟 哇！太厉害了！10 题全部答对！<br>
+                    火龙队的好奇与勇气带你完美通关！保持这个状态继续加油！
+                </p>
+            `;
+        } else {
+            // 统计每种分类的错误次数
+            let stats = {};
+            currentSessionErrors.forEach(item => {
+                let cat = analyzePinyinCategory(item);
+                stats[cat] = (stats[cat] || 0) + 1;
+            });
+
+            // 找出错误最多的项目
+            let sortedCats = Object.keys(stats).sort((a,b) => stats[b] - stats[a]);
+            let topWeakness = sortedCats[0];
+
+            let html = `<p style="font-size: 15px; color: #475569; margin-bottom: 10px;">本次练习中，小朋友主要在以下方面需要再加深印象：</p>`;
+            
+            sortedCats.forEach(cat => {
+                html += `
+                    <div class="analysis-item">
+                        <span>• ${cat} 相关题目：</span>
+                        <span class="analysis-tag">答错 ${stats[cat]} 次</span>
+                    </div>
+                `;
+            });
+
+            html += `
+                <p style="background-color: #fef3c7; color: #b45309; padding: 10px; border-radius: 10px; font-weight: bold; margin-top: 15px; font-size: 15px;">
+                    💡 小建议：小朋友在 <span style="text-decoration: underline; color: #d97706;">【${topWeakness}】</span> 上需要再加强喔！<br>
+                    可以利用左侧的「特定声母、韵母练习」专门多练练它！
+                </p>
+            `;
+
+            analysisContentEl.innerHTML = html;
+        }
     }
 
     // 结算画面选择：“是”（重新开始挑战）
@@ -658,6 +788,11 @@
                 wrongCount++;
                 inputEl.value = '';
 
+                if (wrongCount === 1) {
+                    // 只要错第 1 次，就计入本局错题分析列表
+                    currentSessionErrors.push(currentQuestion);
+                }
+
                 if (wrongCount < 3) {
                     feedbackEl.className = 'feedback wrong';
                     feedbackEl.innerText = `❌ 答错啰 (${wrongCount}/3 次)，再试一次看看！`;
@@ -666,14 +801,14 @@
                     feedbackEl.className = 'feedback wrong';
                     feedbackEl.innerHTML = `
                         <div>💡 答错 3 次啰！正确答案是: <strong>${targetAnswer}</strong></div>
-                        <div style="font-size: 15px; color: #7f1d1d;">✏️ 请看著上面的正确答案，在框内打一次并按 Enter 练习：</div>
+                        <div style="font-size: 15px; color: #7f1d1d;">✏️ 请看着上面的正确答案，在框内打一次并按 Enter 练习：</div>
                     `;
                     inputEl.focus();
 
                     // 加入错题本
                     const alreadyIn = wrongList.some(item => item.word === currentQuestion.word && item.answer === targetAnswer);
                     if (!alreadyIn && currentMode !== 4) {
-                        wrongList.push({ word: currentQuestion.word, answer: targetAnswer });
+                        wrongList.push({ word: currentQuestion.word, answer: targetAnswer, category: currentQuestion.category });
                     }
                 }
             }
