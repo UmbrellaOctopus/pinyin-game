@@ -163,14 +163,14 @@
             font-weight: bold;
             min-height: 45px;
             padding: 8px 12px;
-            line-height: 35px;
+            line-height: 1.5;
             border-radius: 12px;
             transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .correct { 
@@ -250,7 +250,7 @@
         <div class="game-container" id="game-card">
             <!-- 答题进行中界面 -->
             <div id="quiz-box">
-                <div class="score-board">🚩 进度：第 <span id="current-index">1</span> / 20 题 | 正确：<span id="score">0</span> 题</div>
+                <div class="score-board">🚩 进度：第 <span id="current-index">1</span> / 10 题 | 正确：<span id="score">0</span> 题</div>
                 <div class="mode-title" id="current-mode-name">随机拼字练习（无声调）</div>
                 
                 <!-- 出题字 -->
@@ -263,11 +263,11 @@
                 <div id="feedback" class="feedback"></div>
             </div>
 
-            <!-- 20 题挑战结束结算界面 -->
+            <!-- 10 题挑战结束结算界面 -->
             <div id="result-box" class="hidden">
                 <h2 style="font-size: 28px; color: #16a34a; margin-bottom: 10px;">🏆 挑战完成！</h2>
                 <div style="font-size: 22px; font-weight: bold; margin: 20px 0; color: #334155;">
-                    本次成绩：<span id="final-score" style="color: #2563eb; font-size: 32px;">0/20</span>
+                    本次成绩：<span id="final-score" style="color: #2563eb; font-size: 32px;">0/10</span>
                 </div>
                 <p style="font-size: 18px; color: #475569; margin-bottom: 20px;">是否要继续挑战下一轮？</p>
                 <div class="btn-group">
@@ -401,7 +401,7 @@
             { word: "昂", ans: "ang" }, { word: "亨", ans: "eng" }, { word: "英", ans: "ing" }, { word: "轰", ans: "ong" }
         ],
         "zhi整体": [
-            { word: "织", ans: "zhi" }, { word: "吃", ans: "chi" }, { word: "shi", ans: "shi" }, { word: "日", ans: "ri" },
+            { word: "织", ans: "zhi" }, { word: "吃", ans: "chi" }, { word: "狮", ans: "shi" }, { word: "日", ans: "ri" },
             { word: "字", ans: "zi" }, { word: "词", ans: "ci" }, { word: "丝", ans: "si" }, { word: "医", ans: "yi" },
             { word: "巫", ans: "wu" }, { word: "淤", ans: "yu" }, { word: "夜", ans: "ye" }, { word: "月", ans: "yue" },
             { word: "圆", ans: "yuan" }, { word: "音", ans: "yin" }, { word: "云", ans: "yun" }, { word: "影", ans: "ying" }
@@ -413,7 +413,7 @@
     let currentSubCategory = "sh聲母";
     let currentQuestion = {};
     let score = 0;              // 当前答对题数
-    let totalAsked = 0;         // 当前已出的题数（上限 20）
+    let totalAsked = 0;         // 当前已出的题数（上限 10）
     let wrongList = [];         // 错题本库
     let wrongCount = 0;         // 当前题目连续答错次数
 
@@ -441,7 +441,7 @@
         return "";
     }
 
-    // 重置 20 题局数
+    // 重置 10 题局数
     function resetChallenge() {
         score = 0;
         totalAsked = 0;
@@ -497,8 +497,8 @@
 
     // 出题逻辑
     function nextQuestion() {
-        // 判断是否已完成 20 题
-        if (totalAsked >= 20) {
+        // 判断是否已完成 10 题
+        if (totalAsked >= 10) {
             showResult();
             return;
         }
@@ -538,11 +538,11 @@
         inputEl.focus();
     }
 
-    // 显示 20 题结算结果
+    // 显示 10 题结算结果
     function showResult() {
         quizBoxEl.classList.add('hidden');
         resultBoxEl.classList.remove('hidden');
-        finalScoreEl.innerText = `${score}/20`;
+        finalScoreEl.innerText = `${score}/10`;
     }
 
     // 结算画面选择：“是”（重新开始挑战）
@@ -563,7 +563,16 @@
             const targetAnswer = currentQuestion.answer.toLowerCase().trim();
 
             if (userInput === targetAnswer) {
-                // 答对了
+                // 如果是先前答错 3 次，要求看答案打对的状态
+                if (wrongCount >= 3) {
+                    feedbackEl.className = 'feedback correct';
+                    feedbackEl.innerText = '👍 棒！跟着打对啰！进入下一题...';
+                    inputEl.disabled = true;
+                    setTimeout(nextQuestion, 1200);
+                    return;
+                }
+
+                // 正常第一次或第二次尝试就答对
                 feedbackEl.className = 'feedback correct';
                 feedbackEl.innerText = '🎉 太棒了！答对啰！';
                 score++;
@@ -584,13 +593,13 @@
                     feedbackEl.className = 'feedback wrong';
                     feedbackEl.innerText = `❌ 答错啰 (${wrongCount}/3 次)，再试一次看看！`;
                 } else {
-                    // 答错第 3 次：显示正确答案，并提供“继续挑战”按钮让学生自由停留
+                    // 答错第 3 次：显示正确答案，并要求学生看着答案打一遍
                     feedbackEl.className = 'feedback wrong';
                     feedbackEl.innerHTML = `
                         <div>💡 答错 3 次啰！正确答案是: <strong>${targetAnswer}</strong></div>
-                        <button class="action-btn" style="margin-top:8px;" onclick="nextQuestion()">继续挑战 ➔</button>
+                        <div style="font-size: 15px; color: #7f1d1d;">✏️ 请看著上面的正确答案，在框内打一次并按 Enter 练习：</div>
                     `;
-                    inputEl.disabled = true;
+                    inputEl.focus();
 
                     // 加入错题本
                     const alreadyIn = wrongList.some(item => item.word === currentQuestion.word && item.answer === targetAnswer);
