@@ -34,6 +34,7 @@
             color: #16a34a;
             text-align: center;
             margin-bottom: 10px;
+            cursor: pointer;
         }
 
         .menu-btn {
@@ -82,10 +83,57 @@
             border-radius: 24px;
             box-shadow: 0 12px 24px rgba(0,0,0,0.05);
             text-align: center;
-            max-width: 600px;
+            max-width: 650px;
             width: 100%;
             border: 4px solid #bbf7d0;
             box-sizing: border-box;
+        }
+
+        /* 首页欢迎卡片样式 */
+        .home-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .home-title {
+            font-size: 32px;
+            color: #15803d;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .home-subtitle {
+            font-size: 20px;
+            color: #334155;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .dragon-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            margin: 10px 0;
+        }
+
+        .start-btn {
+            background-color: #f59e0b;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 16px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .start-btn:hover {
+            background-color: #d97706;
+            transform: scale(1.05);
         }
 
         .score-board {
@@ -108,7 +156,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             margin-bottom: 20px;
         }
 
@@ -227,8 +275,8 @@
 
     <!-- 左侧导航栏 -->
     <div class="sidebar">
-        <h2>拼音冒险岛</h2>
-        <button class="menu-btn active" onclick="switchMode(1)">随机拼字练习<br>(无声调)</button>
+        <h2 onclick="goHome()">🐉 拼音冒险岛</h2>
+        <button class="menu-btn" onclick="switchMode(1)">随机拼字练习<br>(无声调)</button>
         <button class="menu-btn" onclick="switchMode(2)">随机拼字练习<br>(加入声调)</button>
         <button class="menu-btn" onclick="switchMode(3)">特定声母、韵母练习</button>
         <button class="menu-btn" onclick="switchMode(4)">错题本<br>(加强练习)</button>
@@ -248,8 +296,21 @@
 
         <!-- 游戏核心卡片 -->
         <div class="game-container" id="game-card">
-            <!-- 答题进行中界面 -->
-            <div id="quiz-box">
+            
+            <!-- 0. 首页欢迎界面 -->
+            <div id="home-box" class="home-container">
+                <h1 class="home-title">🔥 欢迎来到拼音冒险岛 🔥</h1>
+                <p class="home-subtitle">
+                    小朋友你准备好了吗？<br>
+                    请拿出我们<b>火龙队</b>的<b>好奇</b>、<b>毅力</b>与<b>勇气</b>的特质，<br>
+                    出发去冒险吧！✨
+                </p>
+                <img src="dragon.png" alt="火龙队特质" class="dragon-img">
+                <button class="start-btn" onclick="switchMode(1)">🚀 开始冒险！</button>
+            </div>
+
+            <!-- 1. 答题进行中界面 -->
+            <div id="quiz-box" class="hidden">
                 <div class="score-board">🚩 进度：第 <span id="current-index">1</span> / 10 题 | 正确：<span id="score">0</span> 题</div>
                 <div class="mode-title" id="current-mode-name">随机拼字练习（无声调）</div>
                 
@@ -257,13 +318,13 @@
                 <div class="word-display" id="word-target">眼睛</div>
                 
                 <!-- 输入框 -->
-                <input type="text" id="pinyin-input" class="input-box" placeholder="在这里输入拼音..." autocomplete="off" autofocus>
+                <input type="text" id="pinyin-input" class="input-box" placeholder="在这里输入拼音..." autocomplete="off">
                 
                 <!-- 结果回馈 -->
                 <div id="feedback" class="feedback"></div>
             </div>
 
-            <!-- 10 题挑战结束结算界面 -->
+            <!-- 2. 10 题挑战结束结算界面 -->
             <div id="result-box" class="hidden">
                 <h2 style="font-size: 28px; color: #16a34a; margin-bottom: 10px;">🏆 挑战完成！</h2>
                 <div style="font-size: 22px; font-weight: bold; margin: 20px 0; color: #334155;">
@@ -409,7 +470,7 @@
     };
 
     // 状态变量
-    let currentMode = 1; 
+    let currentMode = 0; // 0 代表首页欢迎画面
     let currentSubCategory = "sh聲母";
     let currentQuestion = {};
     let score = 0;              // 当前答对题数
@@ -418,6 +479,9 @@
     let wrongCount = 0;         // 当前题目连续答错次数
 
     // DOM 元素
+    const homeBoxEl = document.getElementById('home-box');
+    const quizBoxEl = document.getElementById('quiz-box');
+    const resultBoxEl = document.getElementById('result-box');
     const modeTitleEl = document.getElementById('current-mode-name');
     const wordTargetEl = document.getElementById('word-target');
     const inputEl = document.getElementById('pinyin-input');
@@ -425,8 +489,6 @@
     const scoreEl = document.getElementById('score');
     const currentIndexEl = document.getElementById('current-index');
     const subMenuEl = document.getElementById('sub-menu');
-    const quizBoxEl = document.getElementById('quiz-box');
-    const resultBoxEl = document.getElementById('result-box');
     const finalScoreEl = document.getElementById('final-score');
 
     // 拼音转换工具
@@ -446,8 +508,21 @@
         score = 0;
         totalAsked = 0;
         scoreEl.innerText = score;
+        homeBoxEl.classList.add('hidden');
         quizBoxEl.classList.remove('hidden');
         resultBoxEl.classList.add('hidden');
+    }
+
+    // 返回首页
+    function goHome() {
+        currentMode = 0;
+        const buttons = document.querySelectorAll('.menu-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        subMenuEl.classList.add('hidden');
+        quizBoxEl.classList.add('hidden');
+        resultBoxEl.classList.add('hidden');
+        homeBoxEl.classList.remove('hidden');
     }
 
     // 切换模式
@@ -497,7 +572,6 @@
 
     // 出题逻辑
     function nextQuestion() {
-        // 判断是否已完成 10 题
         if (totalAsked >= 10) {
             showResult();
             return;
@@ -551,11 +625,6 @@
         nextQuestion();
     }
 
-    // 结算画面选择：“否”（返回主页模式 1）
-    function goHome() {
-        switchMode(1);
-    }
-
     // 输入判定（按 Enter 判定）
     inputEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -572,7 +641,7 @@
                     return;
                 }
 
-                // 正常第一次或第二次尝试就答对
+                // 正常答对
                 feedbackEl.className = 'feedback correct';
                 feedbackEl.innerText = '🎉 太棒了！答对啰！';
                 score++;
@@ -611,8 +680,8 @@
         }
     });
 
-    // 页面初始化
-    nextQuestion();
+    // 预设呈现首页欢迎画面
+    goHome();
 </script>
 </body>
 </html>
