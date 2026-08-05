@@ -82,7 +82,7 @@
             border-radius: 24px;
             box-shadow: 0 12px 24px rgba(0,0,0,0.05);
             text-align: center;
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
             border: 4px solid #bbf7d0;
             box-sizing: border-box;
@@ -108,7 +108,7 @@
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
             margin-bottom: 20px;
         }
 
@@ -117,11 +117,12 @@
             border: 3px solid #cbd5e1;
             padding: 12px;
             border-radius: 16px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
             color: #334155;
+            line-height: 1.4;
         }
 
         .sub-btn:hover, .sub-btn.active {
@@ -198,13 +199,14 @@
 
     <!-- 右侧内容区 -->
     <div class="main-content">
-        <!-- 只有模式三会显示的子菜单 -->
+        <!-- 模式三的 6 大分类子菜单 -->
         <div id="sub-menu" class="sub-menu-container hidden">
-            <button class="sub-btn active" onclick="switchSubCategory('sh聲母')">23个声母</button>
-            <button class="sub-btn" onclick="switchSubCategory('dan韻母')">6个单韵母</button>
-            <button class="sub-btn" onclick="switchSubCategory('fu韻母')">9个复韵母</button>
-            <button class="sub-btn" onclick="switchSubCategory('bi韻母')">9个前鼻后鼻韵母</button>
-            <button class="sub-btn" style="grid-column: span 2;" onclick="switchSubCategory('zhi整体')">16个整体认读音节</button>
+            <button class="sub-btn active" onclick="switchSubCategory('sh聲母')">23个声母 :<br>b p m f d t n l g k h j q x zh ch sh r z c s y w</button>
+            <button class="sub-btn" onclick="switchSubCategory('dan韻母')">6个单韵母 :<br>a o e i u ü</button>
+            <button class="sub-btn" onclick="switchSubCategory('fu韻母')">9个复韵母 :<br>ai ei ui ao ou iu ie üe er</button>
+            <button class="sub-btn" onclick="switchSubCategory('qianBi韻母')">5个前鼻韵母 :<br>an en in un ün</button>
+            <button class="sub-btn" onclick="switchSubCategory('houBi韻母')">4个后鼻韵母 :<br>ang eng ing ong</button>
+            <button class="sub-btn" onclick="switchSubCategory('zhi整体')">16个整体认读音节 :<br>zhi chi shi ri zi ci si yi wu yu ye yue yuan yin yun ying</button>
         </div>
 
         <!-- 游戏核心卡片 -->
@@ -251,8 +253,10 @@
             { word: "爱", ans: "ai" }, { word: "诶", ans: "ei" }, { word: "威", ans: "ui" }, { word: "熬", ans: "ao" },
             { word: "欧", ans: "ou" }, { word: "优", ans: "iu" }, { word: "椰", ans: "ie" }, { word: "约", ans: "ue" }, { word: "耳", ans: "er" }
         ],
-        "bi韻母": [
-            { word: "安", ans: "an" }, { word: "恩", ans: "en" }, { word: "因", ans: "in" }, { word: "温", ans: "un" }, { word: "晕", ans: "un" },
+        "qianBi韻母": [
+            { word: "安", ans: "an" }, { word: "恩", ans: "en" }, { word: "因", ans: "in" }, { word: "温", ans: "un" }, { word: "晕", ans: "un" }
+        ],
+        "houBi韻母": [
             { word: "昂", ans: "ang" }, { word: "亨", ans: "eng" }, { word: "英", ans: "ing" }, { word: "轰", ans: "ong" }
         ],
         "zhi整体": [
@@ -311,11 +315,12 @@
         currentSubCategory = catName;
         const subBtns = document.querySelectorAll('.sub-btn');
         subBtns.forEach(btn => {
-            if ((catName==='sh聲母' && btn.innerText.includes('声母')) || 
-                (catName==='dan韻母' && btn.innerText.includes('单韵母')) || 
-                (catName==='fu韻母' && btn.innerText.includes('复韵母')) || 
-                (catName==='bi韻母' && btn.innerText.includes('前鼻后鼻')) || 
-                (catName==='zhi整体' && btn.innerText.includes('整体认读'))) {
+            if ((catName==='sh聲母' && btn.innerText.includes('23个声母')) || 
+                (catName==='dan韻母' && btn.innerText.includes('6个单韵母')) || 
+                (catName==='fu韻母' && btn.innerText.includes('9个复韵母')) || 
+                (catName==='qianBi韻母' && btn.innerText.includes('5个前鼻韵母')) || 
+                (catName==='houBi韻母' && btn.innerText.includes('4个后鼻韵母')) || 
+                (catName==='zhi整体' && btn.innerText.includes('16个整体认读'))) {
                 btn.classList.add('active');
             } else {
                 btn.classList.remove('active');
