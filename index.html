@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>⚡ 汉语拼音大冒险 ⚡</title>
     <style>
-        /* 缤纷可爱 cool 风格设计 */
         body {
             font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background-color: #f0fdf4; /* 温和的浅绿色背景 */
+            background-color: #f0fdf4;
             margin: 0;
             padding: 0;
             display: flex;
@@ -18,31 +17,32 @@
 
         /* 左侧导航栏 */
         .sidebar {
-            width: 280px;
+            width: 300px;
             background-color: #ffffff;
             box-shadow: 2px 0 12px rgba(0,0,0,0.05);
             display: flex;
             flex-direction: column;
             padding: 20px;
-            gap: 15px;
+            gap: 10px;
             border-right: 4px solid #bbf7d0;
             box-sizing: border-box;
+            overflow-y: auto;
         }
 
         .sidebar h2 {
             font-size: 20px;
             color: #16a34a;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             cursor: pointer;
         }
 
         .menu-btn {
             background-color: #f3f4f6;
             border: 2px solid #e5e7eb;
-            padding: 15px;
-            border-radius: 16px;
-            font-size: 16px;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             text-align: left;
@@ -60,6 +60,35 @@
             background-color: #4ade80;
             border-color: #16a34a;
             color: white;
+        }
+
+        /* 年级子菜单容器 */
+        .grade-menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-left: 12px;
+            border-left: 3px solid #cbd5e1;
+            margin-bottom: 5px;
+        }
+
+        .grade-btn {
+            background-color: #ffffff;
+            border: 2px solid #cbd5e1;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+            color: #334155;
+        }
+
+        .grade-btn:hover, .grade-btn.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            color: #1d4ed8;
         }
 
         /* 右侧主要练习区 */
@@ -89,7 +118,6 @@
             box-sizing: border-box;
         }
 
-        /* 首页欢迎卡片样式 */
         .home-container {
             display: flex;
             flex-direction: column;
@@ -150,7 +178,6 @@
             margin-bottom: 15px;
         }
 
-        /* 特定声母、韵母练习的选择区 */
         .sub-menu-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -179,12 +206,40 @@
             color: #1d4ed8;
         }
 
+        .word-display-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
         .word-display {
-            font-size: 64px;
+            font-size: 56px;
             font-weight: bold;
             color: #1e293b;
-            margin: 20px 0;
-            letter-spacing: 4px;
+            letter-spacing: 2px;
+        }
+
+        .audio-btn {
+            background-color: #0284c7;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 22px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .audio-btn:hover {
+            background-color: #0369a1;
+            transform: scale(1.1);
         }
 
         .input-box {
@@ -204,7 +259,6 @@
             box-shadow: 0 0 10px rgba(74, 222, 128, 0.2);
         }
 
-        /* 答题反馈泡泡 */
         .feedback {
             margin-top: 20px;
             font-size: 18px;
@@ -231,7 +285,6 @@
             background-color: #fee2e2; 
         }
 
-        /* 分析框样式 */
         .analysis-box {
             background-color: #f8fafc;
             border: 2px dashed #94a3b8;
@@ -254,7 +307,25 @@
             color: #dc2626;
         }
 
-        /* 按钮通用样式 */
+        .custom-input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .custom-textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid #cbd5e1;
+            font-size: 16px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
         .action-btn {
             background-color: #22c55e;
             color: white;
@@ -291,7 +362,6 @@
             display: none !important; 
         }
     </style>
-    <!-- 引入 pinyin-pro 用于自动解析拼音要素 -->
     <script src="https://unpkg.com/pinyin-pro@3.18.3/dist/index.js"></script>
 </head>
 <body>
@@ -299,9 +369,26 @@
     <!-- 左侧导航栏 -->
     <div class="sidebar">
         <h2 onclick="goHome()">🐉 拼音冒险岛</h2>
+        
+        <!-- 年级选择主菜单按钮 -->
+        <button class="menu-btn" onclick="toggleGradeMenu()">📚 年级选择 ▾</button>
+        
+        <!-- 年级子选单列表 -->
+        <div id="grade-sub-menu" class="grade-menu-container hidden">
+            <button class="grade-btn" onclick="selectGrade('G1')">一年级 (G1)</button>
+            <button class="grade-btn" onclick="selectGrade('G2')">二年级 (G2)</button>
+            <button class="grade-btn" onclick="selectGrade('G3')">三年级 (G3)</button>
+            <button class="grade-btn" onclick="selectGrade('G4')">四年级 (G4)</button>
+            <button class="grade-btn" onclick="selectGrade('G5')">五年级 (G5)</button>
+            <button class="grade-btn" onclick="selectGrade('WLP_初级')">WLP初级</button>
+            <button class="grade-btn" onclick="selectGrade('WLP_中级')">WLP中级</button>
+            <button class="grade-btn" onclick="selectGrade('WLP_高级')">WLP高级</button>
+        </div>
+
         <button class="menu-btn" onclick="switchMode(1)">随机拼字练习<br>(无声调)</button>
         <button class="menu-btn" onclick="switchMode(2)">随机拼字练习<br>(加入声调)</button>
         <button class="menu-btn" onclick="switchMode(3)">特定声母、韵母练习</button>
+        <button class="menu-btn" onclick="switchMode(5)">📝 自订字词练习<br>(家长/老师特训)</button>
         <button class="menu-btn" onclick="switchMode(4)">错题本<br>(加强练习)</button>
     </div>
 
@@ -332,18 +419,37 @@
                 <button class="start-btn" onclick="switchMode(1)">🚀 开始冒险！</button>
             </div>
 
+            <!-- 6. 年级练习模式选择界面 -->
+            <div id="grade-selection-box" class="hidden">
+                <h2 id="grade-title" style="color: #16a34a; margin-top:0;">📚 年级特训区</h2>
+                <p style="color: #475569; font-size: 16px;">请选择您想要进行的练习类型：</p>
+                <div class="btn-group" style="flex-direction: column; width: 80%; margin: 20px auto;">
+                    <button class="start-btn" style="background-color: #3b82f6;" onclick="startGradePractice(false)">随机拼字练习 (无声调)</button>
+                    <button class="start-btn" style="background-color: #8b5cf6;" onclick="startGradePractice(true)">随机拼字练习 (加入声调)</button>
+                </div>
+            </div>
+
+            <!-- 5. 自订字词设置界面 -->
+            <div id="custom-setup-box" class="hidden">
+                <h2 style="color: #16a34a; margin-top:0;">📝 自订字词特训区</h2>
+                <p style="color: #475569; font-size: 15px;">请在下方输入本周要练习的字词（可用逗号、空格或换行分隔）：</p>
+                <div class="custom-input-container">
+                    <textarea id="custom-words-input" class="custom-textarea" placeholder="例如：苹果 香蕉 勇敢 毅力 拼音..."></textarea>
+                    <button class="action-btn" onclick="startCustomPractice()">✨ 保存并开始练习</button>
+                </div>
+            </div>
+
             <!-- 1. 答题进行中界面 -->
             <div id="quiz-box" class="hidden">
-                <div class="score-board">🚩 进度：第 <span id="current-index">1</span> / 10 题 | 正确：<span id="score">0</span> 题</div>
+                <div class="score-board">🚩 进度：第 <span id="current-index">1</span> / <span id="total-index">10</span> 题 | 正确：<span id="score">0</span> 题</div>
                 <div class="mode-title" id="current-mode-name">随机拼字练习（无声调）</div>
                 
-                <!-- 出题字 -->
-                <div class="word-display" id="word-target">眼睛</div>
+                <div class="word-display-box">
+                    <div class="word-display" id="word-target">眼睛</div>
+                    <button class="audio-btn" onclick="speakCurrentWord()" title="播放发音">🔊</button>
+                </div>
                 
-                <!-- 输入框 -->
                 <input type="text" id="pinyin-input" class="input-box" placeholder="在这里输入拼音..." autocomplete="off">
-                
-                <!-- 结果回馈 -->
                 <div id="feedback" class="feedback"></div>
             </div>
 
@@ -354,12 +460,9 @@
                     本次成绩：<span id="final-score" style="color: #2563eb; font-size: 32px;">0/10</span>
                 </div>
 
-                <!-- 📊 练习分析区域 -->
                 <div class="analysis-box">
                     <h3 style="margin-top:0; color:#1e293b; font-size:18px;">📊 学习大冒险分析报告：</h3>
-                    <div id="analysis-content">
-                        <!-- 动态生成的错题分析文本 -->
-                    </div>
+                    <div id="analysis-content"></div>
                 </div>
 
                 <p style="font-size: 18px; color: #475569; margin-bottom: 15px;">要继续挑战下一轮吗？</p>
@@ -382,107 +485,60 @@
         shengmu: ["b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w"]
     };
 
-    // 限定词库（包含 G1-G8 与 WLP 初中高级的所有字词）
-    const customWordList = [
-        "眼睛", "鼻子", "嘴巴", "手", "头", "脚", "耳朵", "爷爷", "奶奶", "爸爸", "妈妈", "哥哥", "姐姐", "弟弟", "妹妹",
-        "我", "你", "爱", "家", "苹果", "草莓", "香蕉", "葡萄", "桔子", "梨", "西瓜", "红色", "黄色", "蓝色", "绿色",
-        "紫色", "桔色", "水果", "喜欢", "不喜欢", "牛", "马", "兔", "羊", "鸡", "狗", "猪", "老虎", "狮子", "斑马",
-        "长颈鹿", "猴子", "熊猫", "大象", "动物", "吃", "个", "只", "抱", "喝", "鸟", "猫", "是", "不是", "的", "早上",
-        "我们", "他", "她", "你好", "星期", "要", "上学", "一年级", "唱歌", "画画", "读书", "写字", "开心", "叫", "岁",
-        "生日", "中文", "和", "条", "教室", "中美国际学校", "这是", "美术", "音乐", "体育", "操场", "们", "也", "都",
-        "叔叔", "伯伯", "姑姑", "外婆", "外公", "舅舅", "阿姨", "他们", "新年", "在", "非常", "去", "出门", "看", "公园",
-        "祝", "快乐", "朋友", "同学", "漂亮", "送给", "卡片", "做", "过来", "剪", "贴", "跑", "明天", "今天", "下午",
-        "帮", "月饼", "中秋节", "放", "希望", "自己", "想要", "玩具", "张", "把", "第", "步", "颜色", "影子", "左",
-        "右", "前", "后", "像", "黑", "跟着", "大", "小", "中", "上", "下", "木", "水", "火", "土", "年", "画",
-        "课", "学校", "哥", "爸", "姐", "妈", "家人", "爷", "奶", "弟", "妹", "有", "会", "小狗", "吗", "好", "说",
-        "什么", "笔", "红", "绿", "金", "桔", "等不及", "游戏", "带", "肚子", "让", "跟", "新", "年级", "城市",
-        "从来", "吃饭", "时候", "坐", "一样", "那", "大家", "知道", "中国", "美国", "地方", "发生", "请", "一起",
-        "跑来跑去", "送", "回家", "陆地", "洲", "北美洲", "南美洲", "水牛", "地形", "森林", "沙漠", "河流", "湖", "岛",
-        "草原", "顶楼", "楼房", "呢", "休息", "容易", "跌倒", "同意", "形状", "旧金山", "加州", "再", "首先", "食物",
-        "有雾", "夏天", "冬天", "语言", "事情", "欺负", "伤害", "抓住", "最后", "帮助", "努力", "以前", "买笔", "握着",
-        "神奇", "善良", "爱你", "想一想", "玩", "还有", "因为", "真的", "这里", "现在", "很多", "交朋友", "昨天", "写",
-        "高兴", "最少", "海洋", "地球", "东西南北", "不同", "高山", "小河", "草地", "美丽", "是谁", "住在", "很快",
-        "没有", "声音", "爬上爬下", "地图", "然后", "拿起来", "很热", "太冷", "哪里", "白云", "有趣", "周末", "庆祝",
-        "里面", "伤心", "害怕", "怎么", "担心", "为什么", "一支笔", "如果", "毛笔", "可是", "每天", "量词", "匹",
-        "蔡伦", "树皮", "麻布", "旧渔网", "纸浆", "张衡", "指南针", "石头", "细针", "挂起来", "工具", "创造力", "一座",
-        "一位", "一些", "火药", "热闹", "长生不老", "爆炸", "烟花", "寻找", "科学实验", "伟大", "问题", "办法",
-        "印刷术", "发明家", "感谢", "用心思考", "小孩", "旁边", "鱼虾", "特别", "方法", "突然", "主意", "猴王",
-        "孙悟空", "错误", "一支", "捉弄", "捏面人", "保存", "纪念品", "混合", "面粉", "盐", "煮", "好奇", "活泼开朗",
-        "愿意", "困难", "温暖", "友善", "帮忙", "沙滩", "大海", "几条", "出生", "游进游出", "肚子疼", "减少", "剩下",
-        "数量", "原因", "污染", "已经", "保护", "天敌", "继续", "灭绝", "吸收", "全球暖化", "恐龙", "变化", "植物",
-        "大量", "挡住", "增加", "贵", "便宜", "发明", "发现", "观察", "勇敢", "尝试", "聪明", "方向", "迷路", "一块",
-        "古老", "但是", "找到", "重要", "结果", "节日", "很久", "常常", "那里", "总是", "简单", "变得", "练习", "世界",
-        "抓到", "厉害", "生气", "明白", "用", "而且", "手工", "想象", "各种", "笑容", "包容", "性格", "毅力", "美味",
-        "勇气", "生病", "安静", "安全", "跳进", "怎么办", "生活", "天气", "最冷", "将来", "时间", "阳光", "真正的",
-        "无法", "可能", "请客", "孝顺", "结账", "口袋", "服务员", "赞助", "肩膀", "孝心", "足够", "西装", "专心",
-        "如同", "洗菜", "切肉", "装进", "厨房", "愉快", "香喷喷", "一双", "遇到", "电灯", "检查", "能量", "能源",
-        "风能", "电能", "化学能", "煤炭", "石油", "天然气", "工作", "环境", "发电", "垃圾", "家庭", "手表", "冰箱",
-        "洗衣机", "空调", "家具", "文化", "习惯", "标准", "信息", "享受", "长假", "堵车", "挤车", "高铁", "旅行",
-        "品质", "高速公路", "行李", "打的", "发展", "高楼大厦", "商店", "解决", "地铁", "现象", "手机", "逛街",
-        "天堂", "打工", "很穷", "太平洋", "坐船", "通过", "接受", "律师", "政府官员", "退休", "华人", "棒球队",
-        "幼童", "留学", "客厅", "足球", "网球", "排球", "美式足球", "点心", "父母", "交给", "星期天", "回答", "拿出",
-        "梦", "晚餐", "饭桌", "下班", "片", "放进", "亲爱", "健康", "电脑", "电视", "运动", "太阳能", "假日", "生长",
-        "化石", "自行车", "商品", "旅游", "左右", "无聊", "不但而且", "一点儿", "方便", "小时", "天使岛", "离开",
-        "分享", "一般", "开始", "或者", "一场", "比赛", "球", "今年", "欢迎", "故事", "照片", "愁容", "喜上眉梢",
-        "丢却", "烦恼", "就算", "分数", "息怒", "时光", "准保", "镜子", "瞧", "吹风", "脸上", "皱纹", "啃", "味道",
-        "很香", "双胞胎", "池塘", "高处", "佳节", "异乡", "茱萸", "生命", "感动", "四季", "春天", "秋天", "幸福",
-        "妖精", "静悄悄", "累了", "许多", "照顾", "草丛", "机会", "亲自", "不许", "客气", "记者", "参观", "访问",
-        "采访", "难道", "出版", "负责", "编辑", "印刷", "读者", "结束", "凝聚", "青翠", "幽静", "和蔼", "坐拥书城",
-        "泉源", "经历", "勉励", "边", "极了", "人类", "陪伴", "教育", "方面", "儿童", "学习", "成绩", "孩子", "感受",
-        "影响", "粮食", "当地", "破坏", "传统", "交流", "更加", "历史", "认识", "尊重", "和平", "进步", "交换",
-        "迫不及待", "海峡", "首都", "现代化", "国际化", "接待", "陌生人", "介绍", "包括", "漫画", "宠物", "数不尽",
-        "部落", "和谐", "擅长", "庆典", "传承", "丰富", "宝贵", "珍惜", "智慧", "值得", "社会", "活动家", "奉献精神",
-        "社区", "权益", "关注", "政治", "合作", "慈善", "责任", "激励", "榜样", "命运", "奋斗", "原住民", "著名",
-        "夏威夷", "经典", "肥胖", "坚持", "去世", "听从", "传递", "创作", "演出", "而", "好极了", "讲义夹", "课程表",
-        "规则", "提醒", "迟到", "固定", "柜子", "贵重", "锁", "科学", "世界历史", "必修课", "另外", "选修课", "校刊",
-        "接", "附近", "交", "内容", "中美国际学校的核心价值观", "尽管", "身份认同", "不同文化", "生活方式", "流利",
-        "外界", "经常", "面临", "另一个", "依然", "价值观", "类似", "情况", "仍然", "穿着", "探亲", "申请", "过程",
-        "对我来说", "永远", "爱好", "自豪", "孔子", "老子", "韩非子", "思想家", "古代", "儒家思想", "道家思想",
-        "法家思想", "政府", "仁", "论语", "周游列国", "秦国", "秦始皇", "春秋", "战国", "弟子", "道德经", "饮食",
-        "特色", "主食", "口味", "季节", "清淡", "肉类", "寒冷", "南方", "北方", "海鲜", "解暑", "保暖", "依照", "变换",
-        "菜系", "习俗", "麻辣", "潮湿", "八大菜系", "代表菜", "南米北面", "酸", "甜", "咸", "辣", "鲁菜", "川菜",
-        "粤菜", "苏菜", "闽菜", "浙菜", "湘菜", "徽菜", "沿海", "资源", "做法", "香辣", "正宗", "地区", "偏甜", "咸鲜",
-        "火功", "比较", "设计", "梦想", "核心", "生存", "双语", "无为", "顺其自然", "强硬", "干预", "战争", "柔软",
-        "命令", "有教无类", "主张", "法律", "科技", "技术", "拍照", "音频", "制造", "微信", "支付", "现金", "话题",
-        "大意", "细节", "价格", "智能手机", "流行", "欧洲", "印度", "东南亚", "专卖店", "成立", "音乐节", "广告",
-        "速度", "外观", "力量", "战国七雄", "赵国", "国王", "文字", "烧掉", "受罚", "皇宫", "浪费", "累死", "王朝",
-        "太后", "太子", "相国", "三皇五帝", "嬴异人", "太子丹", "燕国", "强大", "李斯", "赵高", "胡亥", "成功",
-        "军队", "荷兰", "清朝", "二战", "领袖", "毛泽东", "蒋介石", "蔡英文", "陈水扁", "支持", "郑成功", "正式",
-        "媒体", "建立", "冲突", "态度", "新闻", "偏见", "言论自由", "报道", "可信", "排版", "装订", "彩排", "书展",
-        "版本", "科幻", "魔幻", "改编", "时间线", "竞争", "熟悉", "品牌", "销量", "消费者", "功能", "高端", "吸引",
-        "低端", "大约", "优势", "改进", "销售商", "总部", "嘲笑", "产品", "提供", "充电", "待机时间", "突破", "效果",
-        "性价比", "选择", "质量", "皇帝", "嬴政", "公元前", "争夺", "打仗", "人质", "成就", "打败", "统一", "政策",
-        "货币", "度量衡", "经济", "建造", "阻止", "入侵", "敌人", "批评", "反对", "严格", "犯错", "惩罚", "兵马俑",
-        "灭亡", "存在", "制度", "停止", "派", "探索", "官员", "管理", "将军", "朝代", "统治", "占领", "内战", "国民党",
-        "共产党", "民进党", "主席", "一国两制", "总统", "独立", "目标", "选举", "连任", "封面", "插图", "情节",
-        "元素", "复杂", "经过", "高潮", "解决办法", "结尾", "人物", "背景", "性格特点", "心理描写", "章节", "表情",
-        "构思", "反馈", "修改", "对话", "事件", "详细", "设定", "社会科学课", "集体大会", "老师辅导", "科目", "宣布",
-        "早操", "升旗仪式", "早会", "唠叨", "自由", "同桌", "自卑", "压力", "乐观", "叛逆", "孤独", "顶嘴", "期待",
-        "现实", "平原", "长江", "黄河", "农业", "有利", "不利", "相连", "省", "州", "省会", "州首府", "行政区",
-        "特别行政区", "直辖市", "特点", "民族", "少数民族", "信仰", "宗教", "风俗", "伊斯兰教", "方言", "互相",
-        "气候", "干燥", "面食", "炎热", "方式", "印象", "雄伟", "清秀", "凉爽", "专制", "民主", "科技公司",
-        "程序员", "取消", "任期", "限制", "稳定", "工作制度", "敏感", "人民代表大会", "政治协商会议", "监督",
-        "代表", "区", "市", "镀金时代", "相似", "以及", "童工", "平等", "歧视", "非凡", "闻名", "记录", "真实",
-        "情感", "捕捉", "真情实感", "独特", "上班族", "街头艺人", "人情冷暖", "行业", "理解", "姓", "名", "字",
-        "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "天", "月", "今", "口", "女", "男", "父",
-        "兄弟姐妹", "住", "两", "中", "中学生", "上午", "中午", "最", "有点", "不太", "节", "点", "半", "分",
-        "刻", "起床", "早餐", "午餐", "晚餐", "放学", "先", "以后", "睡觉", "目", "哪", "很", "比如", "常常",
-        "有时候", "从来没", "这个", "中餐", "西餐", "快餐", "饺子", "包子", "面条", "比萨饼", "沙拉", "牛排",
-        "汉堡包", "到", "拿", "包", "听起来", "拜年", "过年", "红包", "元宵节", "汤圆", "白", "可爱", "闻起来",
-        "吃起来", "看起来", "软", "香", "金黄色", "团圆", "汉语", "外语", "爱好", "多", "课后", "活动", "游",
-        "听", "打", "拉", "踢", "足", "平常", "慢跑", "一边", "看电视", "圆", "白色", "金色", "穿", "戴", "一件",
-        "一条", "一双", "一副", "一顶", "一只", "衣服", "衬衫", "雨衣", "毛衣", "运动衣", "裤子", "裙子", "长",
-        "短", "买", "请问", "高", "矮", "所以", "不过", "合适", "适合", "穿衣风格", "号", "多少钱", "什么样",
-        "身材", "找", "试", "显", "参加", "舒服", "时尚", "刷卡", "付现", "校园", "全新", "比", "对面", "前面",
-        "后面", "外面", "右边", "又又", "除了以外", "商场", "大学", "高中", "体育馆", "图书馆", "自习室", "办公室",
-        "会议室", "走廊", "楼梯", "电梯", "一所", "一间", "一栋", "美食", "计划", "品尝", "感到", "兴奋", "新奇",
-        "偏", "尤其", "除此之外", "当地", "热乎乎", "体验", "出发", "旅行社", "搭", "车站", "出租车", "酒店",
-        "上网", "查", "完", "餐馆", "欣赏", "风景", "拍照", "游船", "交通", "行程", "安排", "工资", "福利",
-        "认为", "容易", "保险", "退休金", "条件", "社会地位", "面子", "收入", "年轻人", "兴趣", "越来越", "对人来说",
-        "再来", "总之", "趣事", "紧张", "赶快", "装忙", "得", "冷静", "注意", "自然", "着", "聊", "被", "盆地",
-        "四周", "包围", "丘陵", "闷热", "居住", "成为", "社交", "悠闲", "放松", "竹林", "来自", "改变", "据说",
-        "假新闻", "有精神", "夸张", "其实", "平时", "专家"
-    ];
+    // 完整的年级限定词库列表
+    const rawGradeWords = {
+        G1: [
+            "眼睛", "鼻子", "嘴巴", "手", "头", "脚", "耳朵", "爷爷", "奶奶", "爸爸", "妈妈", "哥哥", "姐姐", "弟弟", "妹妹", "我", "你", "爱", "家", "苹果", "草莓", "香蕉", "葡萄", "桔子", "梨", "西瓜", "红色", "黄色", "蓝色", "绿色", "紫色", "桔色", "水果", "喜欢", "不喜欢", "牛", "马", "兔", "羊", "鸡", "狗", "猪", "老虎", "狮子", "斑马", "长颈鹿", "猴子", "熊猫", "大象", "动物", "吃", "个", "只", "抱", "喝", "鸟", "猫", "是", "不是", "的", "早上", "我们", "他", "她", "你好", "星期", "要", "上学", "一年级", "唱歌", "画画", "读书", "写字", "开心", "叫", "岁", "生日", "中文", "和", "条", "教室", "中美国际学校", "这是", "美术", "音乐", "体育", "操场", "们", "也", "都", "叔叔", "伯伯", "姑姑", "外婆", "外公", "舅舅", "阿姨", "他们", "新年", "在", "非常", "去", "出门", "看", "公园", "祝", "快乐", "朋友", "同学", "漂亮", "送给", "卡片", "做", "过来", "剪", "贴", "跑", "明天", "今天", "下午", "帮", "月饼", "中秋节", "放", "希望", "自己", "想要", "玩具", "张", "把", "第", "步", "颜色", "影子", "左", "右", "前", "后", "像", "黑", "跟着", "大", "小", "中", "上", "下", "木", "水", "火", "土", "年", "画", "月", "课", "学校", "家人", "爷", "奶", "弟", "妹", "有", "会", "写字", "小狗", "吗", "好", "说", "笔", "红", "绿", "金", "桔"
+        ],
+        G2: [
+            "等不及", "游戏", "带", "肚子", "让", "跟", "新", "年级", "城市", "从……来", "吃饭", "时候", "坐", "学校", "一样", "那", "朋友", "大家", "知道", "中国", "美国", "地方", "发生", "请", "一起", "跑来跑去", "送", "回家", "陆地", "洲", "北美洲", "南美洲", "水牛", "狮子", "熊猫", "地形", "森林", "沙漠", "河流", "湖", "岛", "草原", "顶楼", "楼房", "呢", "休息", "容易", "跌倒", "同意", "形状", "旧金山", "加州", "再", "首先", "食物", "有雾", "夏天", "冬天", "语言", "事情", "欺负", "伤害", "抓住", "最后", "帮助", "努力", "以前", "买笔", "握着", "神奇", "善良", "画画", "许多", "爱你", "想一想", "玩", "看", "说", "还有", "因为", "真的", "这里", "现在", "很多", "交朋友", "星期", "昨天", "写", "高兴", "最少", "海洋", "地球", "东西南北", "不同", "高山", "小河", "草地", "美丽", "是谁", "住在", "很快", "没有", "声音", "爬上爬下", "地图", "然后", "拿起来", "很热", "太冷", "哪里", "非常", "白云", "有趣", "周末", "庆祝", "里面", "伤心", "害怕", "读书", "怎么", "担心", "为什么", "一支笔", "如果", "毛笔", "可是", "每天", "头", "条", "匹"
+        ],
+        G3: [
+            "蔡伦", "树皮", "麻布", "旧渔网", "纸浆", "希望", "张衡", "指南针", "石头", "细针", "挂起来", "工具", "创造力", "一座", "一位", "一些", "火药", "热闹", "长生不老", "爆炸", "烟花", "寻找", "科学实验", "神奇", "伟大", "容易", "问题", "办法", "印刷术", "发明家", "感谢", "用心思考", "小孩", "旁边", "鱼虾", "特别", "有趣", "方法", "突然", "主意", "猴王", "孙悟空", "错误", "一支", "欺负", "捉弄", "捏面人", "保存", "纪念品", "混合", "面粉", "盐", "煮", "好奇", "活泼开朗", "愿意", "困难", "温暖", "友善", "帮忙", "沙滩", "大海", "几条", "出生", "游进游出", "肚子疼", "减少", "剩下", "数量", "原因", "污染", "已经", "保护", "天敌", "继续", "灭绝", "吸收", "全球暖化", "恐龙", "变化", "植物", "大量", "挡住", "增加", "贵", "便宜", "发明", "发现", "观察", "勇敢", "尝试", "聪明", "方向", "迷路", "以前", "一块", "古老", "但是", "找到", "重要", "结果", "节日", "很久", "常常", "那里", "总是", "简单", "变得", "练习", "世界", "抓到", "厉害", "生气", "明白", "用", "而且", "手工", "想象", "各种", "笑容", "包容", "性格", "毅力", "美味", "勇气", "生病", "安静", "过来", "害怕", "安全", "跳进", "怎么办", "生活", "天气", "最冷", "将来", "时间", "阳光", "真正的", "无法", "可能"
+        ],
+        G4: [
+            "请客", "孝顺", "外公", "外婆", "结账", "口袋", "服务员", "赞助", "肩膀", "孝心", "足够", "西装", "专心", "如同", "洗菜", "切肉", "装进", "厨房", "愉快", "香喷喷", "一双", "感谢", "遇到", "电灯", "检查", "能量", "能源", "风能", "电能", "化学能", "煤炭", "石油", "天然气", "工作", "环境", "发电", "垃圾", "家庭", "手表", "冰箱", "洗衣机", "空调", "家具", "文化", "习惯", "标准", "信息", "享受", "长假", "堵车", "挤车", "高铁", "旅行", "品质", "高速公路", "行李", "打的", "发展", "高楼大厦", "商店", "解决", "地铁", "现象", "手机", "逛街", "天堂", "打工", "很穷", "太平洋", "坐船", "通过", "接受", "律师", "政府官员", "退休", "华人", "棒球队", "幼童", "留学", "客厅", "足球", "网球", "排球", "美式足球", "请", "点心", "父母", "交给", "星期天", "回答", "拿出", "梦", "晚餐", "饭桌", "下班", "片", "放进", "亲爱", "健康", "电脑", "电视", "运动", "太阳能", "假日", "生长", "化石", "自行车", "商品", "旅游", "左右", "无聊", "不但...而且...", "一点儿", "方便", "小时", "天使岛", "离开", "分享", "一般", "或者", "一场", "比赛", "球", "今年", "欢迎", "故事", "照片"
+        ],
+        G5: [
+            "愁容", "喜上眉梢", "丢却", "烦恼", "就算", "分数", "息怒", "时光", "准保", "镜子", "瞧", "吹风", "脸上", "皱纹", "啃", "味道", "很香", "双胞胎", "池塘", "高处", "佳节", "异乡", "茱萸", "生命", "感动", "四季", "春天", "秋天", "幸福", "妖精", "静悄悄", "累了", "许多", "照顾", "草丛", "机会", "亲自", "不许", "客气", "记者", "参观", "访问", "采访", "难道", "出版", "负责", "编辑", "印刷", "读者", "结束", "凝聚", "青翠", "幽静", "和蔼", "坐拥书城", "泉源", "经历", "勉励", "边", "极了", "人类", "陪伴", "教育", "方面", "儿童", "学习", "成绩", "孩子", "感受", "影响", "粮食", "当地", "破坏", "传统", "交流", "更加", "历史", "认识", "尊重", "和平", "进步", "交换", "迫不及待", "海峡", "首都", "现代化", "国际化", "接待", "陌生人", "介绍", "包括", "漫画", "宠物", "数不尽", "部落", "和谐", "擅长", "庆典", "传承", "丰富", "宝贵", "珍惜", "智慧", "值得", "社会", "活动家", "奉献精神", "社区", "权益", "关注", "政治", "合作", "慈善", "责任", "激励", "榜样", "命运", "奋斗", "原住民", "著名", "夏威夷", "经典", "肥胖", "坚持", "去世", "听从", "传递", "创作", "演出", "让", "提醒", "快乐", "而", "春夏秋冬天", "好极了"
+        ],
+        WLP_初级: [
+            "我", "你", "好", "姓", "的", "朋友", "他", "是", "不是", "什么", "名", "字", "吗", "叫", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "年", "天", "月", "有", "大", "小", "今", "岁", "出", "生", "日", "几", "家", "人", "口", "爸爸", "妈妈", "姐姐", "妹妹", "弟弟", "哥哥", "爷爷", "奶奶", "女", "男", "父", "兄弟姐妹", "和", "住", "在", "两", "中", "美", "国", "喜欢", "学生", "中学生", "每天", "上午", "中午", "下午", "明天", "最", "有点", "不太", "非常", "节", "课", "现在", "点", "半", "分", "刻", "早上", "上学", "上课", "起床", "吃", "早餐", "午餐", "晚餐", "放学", "回家", "要", "了", "先", "然后", "以后", "睡觉", "目", "哪", "很", "比如", "呢", "总是", "常常", "有时候", "从来没", "也", "一起", "这个", "周末", "去", "中餐", "西餐", "快餐", "饺子", "包子", "面条", "比萨饼", "沙拉", "牛排", "汉堡包", "新年", "春节", "到", "快乐", "做", "会", "拿", "包", "玩", "看", "还", "放", "听起来", "有趣", "拜年", "过年", "红包", "庆祝", "元宵节", "汤圆", "白", "可爱", "闻起来", "吃起来", "看起来", "甜", "软", "香", "咸", "金黄色", "代表", "团圆", "圆", "语言", "跟", "说", "汉语", "外语", "因为", "爱好", "运动", "多", "课后", "活动", "游", "听", "打", "拉", "跑", "踢", "足", "公园", "平常", "时间", "星期", "慢跑", "一边...一边...", "看电视"
+        ],
+        WLP_中级: [
+            "白色", "红色", "金色", "黄色", "蓝色", "黑色", "穿", "戴", "带", "一件", "一条", "一双", "一副", "一顶", "一只", "衣服", "衬衫", "雨衣", "毛衣", "运动衣", "裤子", "裙子", "长", "短", "如果...就...", "买", "请问", "高", "矮", "所以", "不过", "合适", "适合", "穿衣风格", "号", "多少钱", "什么样", "身材", "欢迎", "找", "试", "显", "参加", "简单", "舒服", "时尚", "流行", "刷卡", "付现", "手机", "支付", "校园", "全新", "比", "对面", "旁边", "前面", "后面", "外面", "里面", "左边", "右边", "附近", "这里", "又...又...", "除了...以外", "就", "商场", "大学", "高中", "操场", "体育馆", "教室", "图书馆", "自习室", "办公室", "会议室", "走廊", "楼梯", "电梯", "一所", "一间", "一栋", "美食", "特色", "计划", "品尝", "感到", "兴奋", "新奇", "偏", "尤其", "让", "清淡", "新鲜", "除此之外", "方便", "当地", "美味", "热乎乎", "体验", "出发", "旅行社", "搭", "车站", "出租车", "酒店", "行李", "上网", "查", "完", "餐馆", "欣赏", "风景", "像", "拍照", "游船", "交通", "地图", "行程", "安排", "坐", "不但", "而且", "没错"
+        ],
+        WLP_高级: [
+            "各种各样", "工作", "内容", "负责", "稳定", "工资", "福利", "认为", "特点", "生活", "容易", "保险", "退休金", "条件", "社会地位", "面子", "收入", "年轻人", "兴趣", "越来越", "对（人）来说", "首先", "再来", "最后", "总之", "对", "来说", "分享", "发生", "趣事", "特别", "紧张", "赶快", "装忙", "得", "办法", "冷静", "注意", "自然", "着", "结果", "笑", "把", "一...就...", "聊", "被", "地形", "盆地", "四周", "高山", "包围", "平原", "丘陵", "河流", "潮湿", "闷热", "冬天", "凉爽", "舒服", "居住", "成为", "饮食", "气候", "文化", "社交", "代表", "生活方式", "悠闲", "放松", "竹林", "来自", "改变", "流行", "媒体", "报道", "选择", "据说", "假新闻", "有精神", "记者", "采访", "发现", "现象", "然而", "夸张", "其实", "平时", "专家", "可能", "当成", "一般"
+        ]
+    };
+
+    // 动态拼接累加各年级的词库数组（避免重复字词）
+    function getCumulativeGradeList(gradeKey) {
+        let combined = [];
+        if (gradeKey === 'G1') {
+            combined = [...rawGradeWords.G1];
+        } else if (gradeKey === 'G2') {
+            combined = [...rawGradeWords.G1, ...rawGradeWords.G2];
+        } else if (gradeKey === 'G3') {
+            combined = [...rawGradeWords.G1, ...rawGradeWords.G2, ...rawGradeWords.G3];
+        } else if (gradeKey === 'G4') {
+            combined = [...rawGradeWords.G1, ...rawGradeWords.G2, ...rawGradeWords.G3, ...rawGradeWords.G4];
+        } else if (gradeKey === 'G5') {
+            combined = [...rawGradeWords.G1, ...rawGradeWords.G2, ...rawGradeWords.G3, ...rawGradeWords.G4, ...rawGradeWords.G5];
+        } else if (gradeKey === 'WLP_初级') {
+            combined = [...rawGradeWords.WLP_初级];
+        } else if (gradeKey === 'WLP_中级') {
+            combined = [...rawGradeWords.WLP_初级, ...rawGradeWords.WLP_中级];
+        } else if (gradeKey === 'WLP_高级') {
+            combined = [...rawGradeWords.WLP_初级, ...rawGradeWords.WLP_中级, ...rawGradeWords.WLP_高级];
+        }
+        return Array.from(new Set(combined)); // 过滤重复项
+    }
+
+    let activeGradeList = [];
+    let selectedGradeName = "";
+    let userCustomList = [];
 
     const categoryBank = {
         "sh聲母": [
@@ -511,20 +567,21 @@
         ]
     };
 
-    // 状态变量
     let currentMode = 0;
     let currentSubCategory = "sh聲母";
     let currentQuestion = {};
     let score = 0;
     let totalAsked = 0;
+    let maxQuestionsPerRound = 10;
     let wrongList = [];
     let wrongCount = 0;
-
-    // 记录本局 10 题中的错题要素统计
     let currentSessionErrors = [];
+    let isGradeWithTone = false;
 
     // DOM 元素
     const homeBoxEl = document.getElementById('home-box');
+    const customSetupBoxEl = document.getElementById('custom-setup-box');
+    const gradeSelectionBoxEl = document.getElementById('grade-selection-box');
     const quizBoxEl = document.getElementById('quiz-box');
     const resultBoxEl = document.getElementById('result-box');
     const modeTitleEl = document.getElementById('current-mode-name');
@@ -533,11 +590,66 @@
     const feedbackEl = document.getElementById('feedback');
     const scoreEl = document.getElementById('score');
     const currentIndexEl = document.getElementById('current-index');
+    const totalIndexEl = document.getElementById('total-index');
     const subMenuEl = document.getElementById('sub-menu');
+    const gradeSubMenuEl = document.getElementById('grade-sub-menu');
     const finalScoreEl = document.getElementById('final-score');
     const analysisContentEl = document.getElementById('analysis-content');
+    const customWordsInputEl = document.getElementById('custom-words-input');
+    const gradeTitleEl = document.getElementById('grade-title');
 
-    // 拼音转换工具
+    function toggleGradeMenu() {
+        gradeSubMenuEl.classList.toggle('hidden');
+    }
+
+    function selectGrade(gradeKey) {
+        activeGradeList = getCumulativeGradeList(gradeKey);
+        
+        const displayNames = {
+            'G1': '一年级 (G1)', 'G2': '二年级 (G2)', 'G3': '三年级 (G3)', 'G4': '四年级 (G4)',
+            'G5': '五年级 (G5)', 'WLP_初级': 'WLP初级', 'WLP_中级': 'WLP中级', 'WLP_高级': 'WLP高级'
+        };
+        
+        selectedGradeName = displayNames[gradeKey];
+        gradeTitleEl.innerText = `📚 ${selectedGradeName} 特训区`;
+
+        const btns = document.querySelectorAll('.grade-btn');
+        btns.forEach(btn => {
+            if (btn.innerText.includes(selectedGradeName)) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+
+        // 隐藏其他界面，显示年级模式选择界面
+        homeBoxEl.classList.add('hidden');
+        customSetupBoxEl.classList.add('hidden');
+        quizBoxEl.classList.add('hidden');
+        resultBoxEl.classList.add('hidden');
+        gradeSelectionBoxEl.classList.remove('hidden');
+    }
+
+    function startGradePractice(withTone) {
+        isGradeWithTone = withTone;
+        currentMode = 6; // 年级专属练习模式
+        
+        modeTitleEl.innerText = `${selectedGradeName} - ${withTone ? '随机拼字练习 (加入声调)' : '随机拼字练习 (无声调)'}`;
+        maxQuestionsPerRound = 10;
+        totalIndexEl.innerText = maxQuestionsPerRound;
+
+        gradeSelectionBoxEl.classList.add('hidden');
+        resetChallenge();
+        nextQuestion();
+    }
+
+    function speakCurrentWord() {
+        if ('speechSynthesis' in window && currentQuestion.word) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(currentQuestion.word);
+            msg.lang = 'zh-CN';
+            msg.rate = 0.8;
+            window.speechSynthesis.speak(msg);
+        }
+    }
+
     function getPinyin(word, withTone) {
         if (typeof pinyinPro !== 'undefined') {
             if (withTone) {
@@ -549,43 +661,54 @@
         return "";
     }
 
-    // 重置 10 题局数
     function resetChallenge() {
         score = 0;
         totalAsked = 0;
-        currentSessionErrors = []; // 清空本局错题纪录
+        currentSessionErrors = [];
         scoreEl.innerText = score;
         homeBoxEl.classList.add('hidden');
+        customSetupBoxEl.classList.add('hidden');
+        gradeSelectionBoxEl.classList.add('hidden');
         quizBoxEl.classList.remove('hidden');
         resultBoxEl.classList.add('hidden');
     }
 
-    // 返回首页
     function goHome() {
         currentMode = 0;
         const buttons = document.querySelectorAll('.menu-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
         
         subMenuEl.classList.add('hidden');
+        gradeSubMenuEl.classList.add('hidden');
         quizBoxEl.classList.add('hidden');
         resultBoxEl.classList.add('hidden');
+        customSetupBoxEl.classList.add('hidden');
+        gradeSelectionBoxEl.classList.add('hidden');
         homeBoxEl.classList.remove('hidden');
     }
 
-    // 切换模式
     function switchMode(modeNum) {
         currentMode = modeNum;
         
         const buttons = document.querySelectorAll('.menu-btn');
-        buttons.forEach((btn, idx) => {
-            if (idx === modeNum - 1) btn.classList.add('active');
-            else btn.classList.remove('active');
-        });
+        buttons.forEach(btn => btn.classList.remove('active'));
 
-        if (modeNum === 3) {
-            subMenuEl.classList.remove('hidden');
-        } else {
-            subMenuEl.classList.add('hidden');
+        if (modeNum === 1) buttons[1].classList.add('active');
+        if (modeNum === 2) buttons[2].classList.add('active');
+        if (modeNum === 3) buttons[3].classList.add('active');
+        if (modeNum === 5) buttons[4].classList.add('active');
+        if (modeNum === 4) buttons[5].classList.add('active');
+
+        if (modeNum === 3) subMenuEl.classList.remove('hidden');
+        else subMenuEl.classList.add('hidden');
+
+        if (modeNum === 5) {
+            homeBoxEl.classList.add('hidden');
+            quizBoxEl.classList.add('hidden');
+            resultBoxEl.classList.add('hidden');
+            gradeSelectionBoxEl.classList.add('hidden');
+            customSetupBoxEl.classList.remove('hidden');
+            return;
         }
 
         if (modeNum === 1) modeTitleEl.innerText = "随机拼字练习（无声调）";
@@ -593,11 +716,34 @@
         if (modeNum === 3) modeTitleEl.innerText = "特定声母、韵母练习";
         if (modeNum === 4) modeTitleEl.innerText = "错题本（加强练习）";
 
+        maxQuestionsPerRound = 10;
+        totalIndexEl.innerText = maxQuestionsPerRound;
+
         resetChallenge();
         nextQuestion();
     }
 
-    // 切换子分类
+    function startCustomPractice() {
+        const rawText = customWordsInputEl.value.trim();
+        if (!rawText) {
+            alert('请先输入要练习的字词喔！');
+            return;
+        }
+
+        userCustomList = rawText.split(/[\s,，\n]+/).filter(w => w.length > 0);
+        if (userCustomList.length === 0) {
+            alert('未能识别有效的字词，请重新输入！');
+            return;
+        }
+
+        modeTitleEl.innerText = "📝 自订字词特训";
+        maxQuestionsPerRound = Math.min(10, userCustomList.length);
+        totalIndexEl.innerText = maxQuestionsPerRound;
+
+        resetChallenge();
+        nextQuestion();
+    }
+
     function switchSubCategory(catName) {
         currentSubCategory = catName;
         const subBtns = document.querySelectorAll('.sub-btn');
@@ -617,9 +763,8 @@
         nextQuestion();
     }
 
-    // 出题逻辑
     function nextQuestion() {
-        if (totalAsked >= 10) {
+        if (totalAsked >= maxQuestionsPerRound) {
             showResult();
             return;
         }
@@ -633,15 +778,26 @@
         feedbackEl.innerHTML = '';
 
         if (currentMode === 1 || currentMode === 2) {
-            const r = Math.floor(Math.random() * customWordList.length);
-            const targetWord = customWordList[r];
+            const defaultList = getCumulativeGradeList('G1');
+            const r = Math.floor(Math.random() * defaultList.length);
+            const targetWord = defaultList[r];
             const pinyinAns = getPinyin(targetWord, currentMode === 2);
+            currentQuestion = { word: targetWord, answer: pinyinAns, category: null };
+        } else if (currentMode === 6) {
+            const r = Math.floor(Math.random() * activeGradeList.length);
+            const targetWord = activeGradeList[r];
+            const pinyinAns = getPinyin(targetWord, isGradeWithTone);
             currentQuestion = { word: targetWord, answer: pinyinAns, category: null };
         } else if (currentMode === 3) {
             const list = categoryBank[currentSubCategory];
             const r = Math.floor(Math.random() * list.length);
             const q = list[r];
             currentQuestion = { word: q.word, answer: q.ans, category: currentSubCategory };
+        } else if (currentMode === 5) {
+            const r = Math.floor(Math.random() * userCustomList.length);
+            const targetWord = userCustomList[r];
+            const pinyinAns = getPinyin(targetWord, false);
+            currentQuestion = { word: targetWord, answer: pinyinAns, category: null };
         } else if (currentMode === 4) {
             if (wrongList.length === 0) {
                 wordTargetEl.innerText = "🎉";
@@ -657,12 +813,12 @@
 
         wordTargetEl.innerText = currentQuestion.word;
         inputEl.focus();
+
+        setTimeout(speakCurrentWord, 200);
     }
 
-    // 💡 错题分类解析算法
     function analyzePinyinCategory(item) {
         if (item.category) {
-            // 如果是在模式 3 中错的，直接用选择的分类
             const mapName = {
                 'sh聲母': '声母',
                 'dan韻母': '单韵母',
@@ -674,56 +830,45 @@
             return mapName[item.category] || '拼音基础';
         }
 
-        // 去除数字声调进行文本分析
         const cleanAns = item.answer.replace(/[0-9]/g, '').toLowerCase();
 
-        // 1. 检查是否包含整体认读音节
         for (let py of pinyinCategories.zhi) {
             if (cleanAns.includes(py)) return "整体认读音节";
         }
-        // 2. 检查后鼻韵母
         for (let py of pinyinCategories.houBi) {
             if (cleanAns.includes(py)) return "后鼻韵母";
         }
-        // 3. 检查前鼻韵母
         for (let py of pinyinCategories.qianBi) {
             if (cleanAns.includes(py)) return "前鼻韵母";
         }
-        // 4. 检查复韵母
         for (let py of pinyinCategories.fu) {
             if (cleanAns.includes(py)) return "复韵母";
         }
-        // 5. 检查单韵母
         for (let py of pinyinCategories.dan) {
             if (cleanAns.includes(py)) return "单韵母";
         }
-        // 6. 默认归类为声母或基础
         return "声母/拼读";
     }
 
-    // 显示 10 题结算结果及分析
     function showResult() {
         quizBoxEl.classList.add('hidden');
         resultBoxEl.classList.remove('hidden');
-        finalScoreEl.innerText = `${score}/10`;
+        finalScoreEl.innerText = `${score}/${maxQuestionsPerRound}`;
 
-        // 📊 分析生成
         if (currentSessionErrors.length === 0) {
             analysisContentEl.innerHTML = `
                 <p style="color: #16a34a; font-weight: bold; font-size: 18px; margin: 10px 0;">
-                    🌟 哇！太厉害了！10 题全部答对！<br>
+                    🌟 哇！太厉害了！全部答对！<br>
                     火龙队的好奇与勇气带你完美通关！保持这个状态继续加油！
                 </p>
             `;
         } else {
-            // 统计每种分类的错误次数
             let stats = {};
             currentSessionErrors.forEach(item => {
                 let cat = analyzePinyinCategory(item);
                 stats[cat] = (stats[cat] || 0) + 1;
             });
 
-            // 找出错误最多的项目
             let sortedCats = Object.keys(stats).sort((a,b) => stats[b] - stats[a]);
             let topWeakness = sortedCats[0];
 
@@ -749,20 +894,17 @@
         }
     }
 
-    // 结算画面选择：“是”（重新开始挑战）
     function restartChallenge() {
         resetChallenge();
         nextQuestion();
     }
 
-    // 输入判定（按 Enter 判定）
     inputEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             const userInput = inputEl.value.toLowerCase().trim();
             const targetAnswer = currentQuestion.answer.toLowerCase().trim();
 
             if (userInput === targetAnswer) {
-                // 如果是先前答错 3 次，要求看答案打对的状态
                 if (wrongCount >= 3) {
                     feedbackEl.className = 'feedback correct';
                     feedbackEl.innerText = '👍 棒！跟着打对啰！进入下一题...';
@@ -771,7 +913,6 @@
                     return;
                 }
 
-                // 正常答对
                 feedbackEl.className = 'feedback correct';
                 feedbackEl.innerText = '🎉 太棒了！答对啰！';
                 score++;
@@ -784,12 +925,10 @@
                 inputEl.disabled = true;
                 setTimeout(nextQuestion, 1000);
             } else {
-                // 答错了
                 wrongCount++;
                 inputEl.value = '';
 
                 if (wrongCount === 1) {
-                    // 只要错第 1 次，就计入本局错题分析列表
                     currentSessionErrors.push(currentQuestion);
                 }
 
@@ -797,7 +936,6 @@
                     feedbackEl.className = 'feedback wrong';
                     feedbackEl.innerText = `❌ 答错啰 (${wrongCount}/3 次)，再试一次看看！`;
                 } else {
-                    // 答错第 3 次：显示正确答案，并要求学生看着答案打一遍
                     feedbackEl.className = 'feedback wrong';
                     feedbackEl.innerHTML = `
                         <div>💡 答错 3 次啰！正确答案是: <strong>${targetAnswer}</strong></div>
@@ -805,7 +943,6 @@
                     `;
                     inputEl.focus();
 
-                    // 加入错题本
                     const alreadyIn = wrongList.some(item => item.word === currentQuestion.word && item.answer === targetAnswer);
                     if (!alreadyIn && currentMode !== 4) {
                         wrongList.push({ word: currentQuestion.word, answer: targetAnswer, category: currentQuestion.category });
@@ -815,7 +952,6 @@
         }
     });
 
-    // 预设呈现首页欢迎画面
     goHome();
 </script>
 </body>
