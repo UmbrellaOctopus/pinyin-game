@@ -904,7 +904,9 @@
             const userInput = inputEl.value.toLowerCase().trim();
             const targetAnswer = currentQuestion.answer.toLowerCase().trim();
 
-            if (userInput === targetAnswer) {
+            const normalize = (str) => str.replace(/ü/g, 'v');
+
+            if (normalize(userInput) === normalize(targetAnswer)) {
                 if (wrongCount >= 3) {
                     feedbackEl.className = 'feedback correct';
                     feedbackEl.innerText = '👍 棒！跟着打对啰！进入下一题...';
