@@ -15,60 +15,220 @@
             color: #333;
         }
 
-        /* 左侧导航栏 */
+        /* 左侧导航栏 - 冒险地图样式 */
         .sidebar {
-            width: 300px;
-            background-color: #ffffff;
-            box-shadow: 2px 0 12px rgba(0,0,0,0.05);
+            width: 320px;
+            background: linear-gradient(180deg, #f0fdf4 0%, #e0f2fe 100%);
+            box-shadow: 4px 0 18px rgba(0,0,0,0.06);
             display: flex;
             flex-direction: column;
-            padding: 20px;
-            gap: 10px;
-            border-right: 4px solid #bbf7d0;
+            padding: 20px 16px;
+            gap: 12px;
+            border-right: 4px solid #86efac;
             box-sizing: border-box;
             overflow-y: auto;
         }
 
         .sidebar h2 {
-            font-size: 20px;
-            color: #16a34a;
-            text-align: center;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
-
-        .menu-btn {
-            background-color: #f3f4f6;
-            border: 2px solid #e5e7eb;
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
-            color: #4b5563;
-        }
-
-        .menu-btn:hover {
-            background-color: #dcfce7;
-            border-color: #4ade80;
+            font-size: 22px;
             color: #15803d;
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            background: #ffffff;
+            padding: 10px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            border: 3px solid #4ade80;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .menu-btn.active {
-            background-color: #4ade80;
-            border-color: #16a34a;
+        .sidebar h2:hover {
+            transform: scale(1.03);
+        }
+
+        /* 冒险岛按钮卡片基础样式 */
+        .menu-btn.island-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 12px 14px;
+            border-radius: 18px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .menu-btn.island-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        /* 冒险岛小标籤 */
+        .island-badge {
+            align-self: flex-start;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 10px;
             color: white;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        /* 年级子菜单容器 */
+        /* 冒险岛主要内容 */
+        .island-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .island-icon {
+            font-size: 28px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+            transition: transform 0.2s ease;
+        }
+
+        .menu-btn.island-card:hover .island-icon {
+            transform: scale(1.2) rotate(-5deg);
+        }
+
+        .island-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .island-title {
+            font-size: 15px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .island-desc {
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+
+        @keyframes islandBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        .menu-btn.island-card.active .island-icon {
+            animation: islandBounce 1.5s infinite ease-in-out;
+        }
+
+        /* 六大冒险岛专属主题配色 */
+        /* 1. 知识圣殿岛 (宝蓝) */
+        .island-1 {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-color: #93c5fd;
+            color: #1e40af;
+        }
+        .island-1 .island-badge { background: #3b82f6; }
+        .island-1:hover { border-color: #2563eb; }
+        .island-1.active {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            border-color: #1e3a8a;
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+        }
+
+        /* 2. 基础风暴岛 (翠绿) */
+        .island-2 {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-color: #6ee7b7;
+            color: #065f46;
+        }
+        .island-2 .island-badge { background: #10b981; }
+        .island-2:hover { border-color: #059669; }
+        .island-2.active {
+            background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+            color: white;
+            border-color: #064e3b;
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+        }
+
+        /* 3. 声调旋律岛 (暖黄琥珀) */
+        .island-3 {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-color: #fde047;
+            color: #92400e;
+        }
+        .island-3 .island-badge { background: #f59e0b; }
+        .island-3:hover { border-color: #d97706; }
+        .island-3.active {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border-color: #78350f;
+            box-shadow: 0 6px 18px rgba(245, 158, 11, 0.4);
+        }
+
+        /* 4. 拼音符文岛 (梦幻紫) */
+        .island-4 {
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+            border-color: #c4b5fd;
+            color: #5b21b6;
+        }
+        .island-4 .island-badge { background: #8b5cf6; }
+        .island-4:hover { border-color: #7c3aed; }
+        .island-4.active {
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+            color: white;
+            border-color: #4c1d95;
+            box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
+        }
+
+        /* 5. 魔法自订岛 (玫瑰粉) */
+        .island-5 {
+            background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+            border-color: #fda4af;
+            color: #9f1239;
+        }
+        .island-5 .island-badge { background: #f43f5e; }
+        .island-5:hover { border-color: #e11d48; }
+        .island-5.active {
+            background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%);
+            color: white;
+            border-color: #881337;
+            box-shadow: 0 6px 18px rgba(244, 63, 94, 0.4);
+        }
+
+        /* 6. 错题城堡岛 (珊瑚红) */
+        .island-6 {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+        .island-6 .island-badge { background: #ef4444; }
+        .island-6:hover { border-color: #dc2626; }
+        .island-6.active {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            color: white;
+            border-color: #7f1d1d;
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.4);
+        }
+
+        /* 年级子选单容器 */
         .grade-menu-container {
             display: flex;
             flex-direction: column;
             gap: 6px;
-            padding-left: 12px;
-            border-left: 3px solid #cbd5e1;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 14px;
+            border: 2px solid #bfdbfe;
             margin-bottom: 5px;
         }
 
@@ -370,8 +530,17 @@
     <div class="sidebar">
         <h2 onclick="goHome()">🐉 拼音冒险岛</h2>
         
-        <!-- 年级选择主菜单按钮 -->
-        <button class="menu-btn" onclick="toggleGradeMenu()">📚 年级选择 ▾</button>
+        <!-- 1号岛：年级选择主菜单按钮 -->
+        <button class="menu-btn island-card island-1" onclick="toggleGradeMenu()">
+            <div class="island-badge">🏝️ 1号岛</div>
+            <div class="island-content">
+                <span class="island-icon">🏰</span>
+                <div class="island-text">
+                    <div class="island-title">知识圣殿岛</div>
+                    <div class="island-desc">📚 年级专属词库 ▾</div>
+                </div>
+            </div>
+        </button>
         
         <!-- 年级子选单列表 -->
         <div id="grade-sub-menu" class="grade-menu-container hidden">
@@ -385,11 +554,65 @@
             <button class="grade-btn" onclick="selectGrade('WLP_高级')">WLP高级</button>
         </div>
 
-        <button class="menu-btn" onclick="switchMode(1)">随机拼字练习<br>(无声调)</button>
-        <button class="menu-btn" onclick="switchMode(2)">随机拼字练习<br>(加入声调)</button>
-        <button class="menu-btn" onclick="switchMode(3)">特定声母、韵母练习</button>
-        <button class="menu-btn" onclick="switchMode(5)">📝 自订字词练习<br>(家长/老师特训)</button>
-        <button class="menu-btn" onclick="switchMode(4)">错题本<br>(加强练习)</button>
+        <!-- 2号岛：随机无声调 -->
+        <button class="menu-btn island-card island-2" onclick="switchMode(1)">
+            <div class="island-badge">🏝️ 2号岛</div>
+            <div class="island-content">
+                <span class="island-icon">🍃</span>
+                <div class="island-text">
+                    <div class="island-title">基础风暴岛</div>
+                    <div class="island-desc">⚡ 随机拼字 (无声调)</div>
+                </div>
+            </div>
+        </button>
+
+        <!-- 3号岛：随机带声调 -->
+        <button class="menu-btn island-card island-3" onclick="switchMode(2)">
+            <div class="island-badge">🏝️ 3号岛</div>
+            <div class="island-content">
+                <span class="island-icon">🎵</span>
+                <div class="island-text">
+                    <div class="island-title">声调旋律岛</div>
+                    <div class="island-desc">🎶 随机拼字 (带声调)</div>
+                </div>
+            </div>
+        </button>
+
+        <!-- 4号岛：特定声韵母 -->
+        <button class="menu-btn island-card island-4" onclick="switchMode(3)">
+            <div class="island-badge">🏝️ 4号岛</div>
+            <div class="island-content">
+                <span class="island-icon">🔮</span>
+                <div class="island-text">
+                    <div class="island-title">拼音符文岛</div>
+                    <div class="island-desc">🧩 声母、韵母特训</div>
+                </div>
+            </div>
+        </button>
+
+        <!-- 5号岛：自订字词 -->
+        <button class="menu-btn island-card island-5" onclick="switchMode(5)">
+            <div class="island-badge">🏝️ 5号岛</div>
+            <div class="island-content">
+                <span class="island-icon">📜</span>
+                <div class="island-text">
+                    <div class="island-title">魔法自订岛</div>
+                    <div class="island-desc">📝 老师/家长特训</div>
+                </div>
+            </div>
+        </button>
+
+        <!-- 6号岛：错题本 -->
+        <button class="menu-btn island-card island-6" onclick="switchMode(4)">
+            <div class="island-badge">🏝️ 6号岛</div>
+            <div class="island-content">
+                <span class="island-icon">🛡️</span>
+                <div class="island-text">
+                    <div class="island-title">错题城堡岛</div>
+                    <div class="island-desc">⚔️ 错题加强复习</div>
+                </div>
+            </div>
+        </button>
     </div>
 
     <!-- 右侧内容区 -->
@@ -618,6 +841,10 @@
             if (btn.innerText.includes(selectedGradeName)) btn.classList.add('active');
             else btn.classList.remove('active');
         });
+
+        const menuBtns = document.querySelectorAll('.menu-btn');
+        menuBtns.forEach(btn => btn.classList.remove('active'));
+        if (menuBtns[0]) menuBtns[0].classList.add('active');
 
         // 隐藏其他界面，显示年级模式选择界面
         homeBoxEl.classList.add('hidden');
