@@ -35,23 +35,46 @@
         }
 
         .sidebar h2 {
-            font-size: 22px;
+            font-size: 20px;
             color: #15803d;
             text-align: center;
             margin-top: 5px;
             margin-bottom: 8px;
             cursor: pointer;
             background: #ffffff;
-            padding: 10px 16px;
+            padding: 8px 16px;
             border-radius: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.06);
             border: 3px solid #4ade80;
             transition: transform 0.2s;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 2px;
             flex-shrink: 0;
+        }
+
+        .en-header {
+            font-size: 12px;
+            font-weight: 600;
+            color: #166534;
+            opacity: 0.85;
+            letter-spacing: 0.5px;
+        }
+
+        .en-sub {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0.85;
+            margin-top: 2px;
+            line-height: 1.2;
+            letter-spacing: 0.2px;
+        }
+
+        .menu-btn.island-card.active .en-sub {
+            color: rgba(255, 255, 255, 0.92);
         }
 
         .sidebar h2:hover {
@@ -538,88 +561,91 @@
 
     <!-- 左侧导航栏 -->
     <div class="sidebar">
-        <h2 onclick="goHome()">🐉 拼音冒险岛</h2>
+        <h2 onclick="goHome()">
+            <span>🐉 拼音冒险岛</span>
+            <span class="en-header">Pinyin Adventure</span>
+        </h2>
         
         <!-- 1号岛：年级选择主菜单按钮 -->
         <button class="menu-btn island-card island-1" onclick="toggleGradeMenu()">
-            <div class="island-badge">🏝️ 1号岛</div>
+            <div class="island-badge">🏝️ 1号岛 | Island 1</div>
             <div class="island-content">
                 <span class="island-icon">🏰</span>
                 <div class="island-text">
-                    <div class="island-title">知识圣殿岛</div>
-                    <div class="island-desc">📚 年级专属词库 ▾</div>
+                    <div class="island-title">知识圣殿岛 <span class="en-sub">Wisdom Temple</span></div>
+                    <div class="island-desc">📚 年级专属词库 ▾ <span class="en-sub">Grade Vocab</span></div>
                 </div>
             </div>
         </button>
         
         <!-- 年级子选单列表 -->
         <div id="grade-sub-menu" class="grade-menu-container hidden">
-            <button class="grade-btn" onclick="selectGrade('G1')">一年级 (G1)</button>
-            <button class="grade-btn" onclick="selectGrade('G2')">二年级 (G2)</button>
-            <button class="grade-btn" onclick="selectGrade('G3')">三年级 (G3)</button>
-            <button class="grade-btn" onclick="selectGrade('G4')">四年级 (G4)</button>
-            <button class="grade-btn" onclick="selectGrade('G5')">五年级 (G5)</button>
-            <button class="grade-btn" onclick="selectGrade('WLP_初级')">WLP初级</button>
-            <button class="grade-btn" onclick="selectGrade('WLP_中级')">WLP中级</button>
-            <button class="grade-btn" onclick="selectGrade('WLP_高级')">WLP高级</button>
+            <button class="grade-btn" onclick="selectGrade('G1')">一年级 (G1)<span class="en-sub">Grade 1</span></button>
+            <button class="grade-btn" onclick="selectGrade('G2')">二年级 (G2)<span class="en-sub">Grade 2</span></button>
+            <button class="grade-btn" onclick="selectGrade('G3')">三年级 (G3)<span class="en-sub">Grade 3</span></button>
+            <button class="grade-btn" onclick="selectGrade('G4')">四年级 (G4)<span class="en-sub">Grade 4</span></button>
+            <button class="grade-btn" onclick="selectGrade('G5')">五年级 (G5)<span class="en-sub">Grade 5</span></button>
+            <button class="grade-btn" onclick="selectGrade('WLP_初级')">WLP初级<span class="en-sub">WLP Novice</span></button>
+            <button class="grade-btn" onclick="selectGrade('WLP_中级')">WLP中级<span class="en-sub">WLP Inter.</span></button>
+            <button class="grade-btn" onclick="selectGrade('WLP_高级')">WLP高级<span class="en-sub">WLP Advanced</span></button>
         </div>
 
         <!-- 2号岛：随机无声调 -->
         <button class="menu-btn island-card island-2" onclick="switchMode(1)">
-            <div class="island-badge">🏝️ 2号岛</div>
+            <div class="island-badge">🏝️ 2号岛 | Island 2</div>
             <div class="island-content">
                 <span class="island-icon">🍃</span>
                 <div class="island-text">
-                    <div class="island-title">基础风暴岛</div>
-                    <div class="island-desc">⚡ 随机拼字 (无声调)</div>
+                    <div class="island-title">基础风暴岛 <span class="en-sub">Basic Storm Island</span></div>
+                    <div class="island-desc">⚡ 随机拼字 (无声调) <span class="en-sub">Random Words (No Tones)</span></div>
                 </div>
             </div>
         </button>
 
         <!-- 3号岛：随机带声调 -->
         <button class="menu-btn island-card island-3" onclick="switchMode(2)">
-            <div class="island-badge">🏝️ 3号岛</div>
+            <div class="island-badge">🏝️ 3号岛 | Island 3</div>
             <div class="island-content">
                 <span class="island-icon">🎵</span>
                 <div class="island-text">
-                    <div class="island-title">声调旋律岛</div>
-                    <div class="island-desc">🎶 随机拼字 (带声调)</div>
+                    <div class="island-title">声调旋律岛 <span class="en-sub">Tone Melody Island</span></div>
+                    <div class="island-desc">🎶 随机拼字 (带声调) <span class="en-sub">Random Words (With Tones)</span></div>
                 </div>
             </div>
         </button>
 
         <!-- 4号岛：特定声韵母 -->
         <button class="menu-btn island-card island-4" onclick="switchMode(3)">
-            <div class="island-badge">🏝️ 4号岛</div>
+            <div class="island-badge">🏝️ 4号岛 | Island 4</div>
             <div class="island-content">
                 <span class="island-icon">🔮</span>
                 <div class="island-text">
-                    <div class="island-title">拼音符文岛</div>
-                    <div class="island-desc">🧩 声母、韵母特训</div>
+                    <div class="island-title">拼音符文岛 <span class="en-sub">Phonics Rune Island</span></div>
+                    <div class="island-desc">🧩 声母、韵母特训 <span class="en-sub">Initials & Finals</span></div>
                 </div>
             </div>
         </button>
 
         <!-- 5号岛：自订字词 -->
         <button class="menu-btn island-card island-5" onclick="switchMode(5)">
-            <div class="island-badge">🏝️ 5号岛</div>
+            <div class="island-badge">🏝️ 5号岛 | Island 5</div>
             <div class="island-content">
                 <span class="island-icon">📜</span>
                 <div class="island-text">
-                    <div class="island-title">魔法自订岛</div>
-                    <div class="island-desc">📝 老师/家长特训</div>
+                    <div class="island-title">魔法自订岛 <span class="en-sub">Magic Custom Island</span></div>
+                    <div class="island-desc">📝 老师/家长特训 <span class="en-sub">Custom Word List</span></div>
                 </div>
             </div>
         </button>
 
         <!-- 6号岛：错题本 -->
         <button class="menu-btn island-card island-6" onclick="switchMode(4)">
-            <div class="island-badge">🏝️ 6号岛</div>
+            <div class="island-badge">🏝️ 6号岛 | Island 6</div>
             <div class="island-content">
                 <span class="island-icon">🛡️</span>
                 <div class="island-text">
-                    <div class="island-title">错题城堡岛</div>
-                    <div class="island-desc">⚔️ 错题加强复习</div>
+                    <div class="island-title">错题城堡岛 <span class="en-sub">Mistake Castle Island</span></div>
+                    <div class="island-desc">⚔️ 错题加强复习 <span class="en-sub">Review Mistakes</span></div>
                 </div>
             </div>
         </button>
