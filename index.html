@@ -14,7 +14,6 @@
             height: 100vh;
             color: #333;
         }
-
         /* 左侧导航栏 - 冒险地图样式 */
         .sidebar {
             width: 320px;
@@ -28,12 +27,10 @@
             box-sizing: border-box;
             overflow-y: auto;
         }
-
         /* 确保侧边栏所有元素保持完整大小不被压缩截断 */
         .sidebar > * {
             flex-shrink: 0;
         }
-
         .sidebar h2 {
             font-size: 20px;
             color: #15803d;
@@ -54,7 +51,6 @@
             gap: 2px;
             flex-shrink: 0;
         }
-
         .en-header {
             font-size: 12px;
             font-weight: 600;
@@ -62,7 +58,6 @@
             opacity: 0.85;
             letter-spacing: 0.5px;
         }
-
         .en-sub {
             display: block;
             font-size: 11px;
@@ -72,15 +67,12 @@
             line-height: 1.2;
             letter-spacing: 0.2px;
         }
-
         .menu-btn.island-card.active .en-sub {
             color: rgba(255, 255, 255, 0.92);
         }
-
         .sidebar h2:hover {
             transform: scale(1.03);
         }
-
         /* 冒险岛按钮卡片基础样式 */
         .menu-btn.island-card {
             position: relative;
@@ -96,13 +88,11 @@
             overflow: hidden;
             flex-shrink: 0;
         }
-
         .menu-btn.island-card:hover {
             transform: translateY(-3px) scale(1.02);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
-
-        /* 冒险岛小标籤 */
+        /* 冒险岛小标签 */
         .island-badge {
             align-self: flex-start;
             font-size: 11px;
@@ -114,51 +104,42 @@
             margin-bottom: 6px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-
         /* 冒险岛主要内容 */
         .island-content {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-
         .island-icon {
             font-size: 28px;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
             transition: transform 0.2s ease;
         }
-
         .menu-btn.island-card:hover .island-icon {
             transform: scale(1.2) rotate(-5deg);
         }
-
         .island-text {
             display: flex;
             flex-direction: column;
         }
-
         .island-title {
             font-size: 15px;
             font-weight: 800;
             line-height: 1.2;
         }
-
         .island-desc {
             font-size: 12px;
             font-weight: 600;
             opacity: 0.85;
             margin-top: 3px;
         }
-
         @keyframes islandBounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-4px); }
         }
-
         .menu-btn.island-card.active .island-icon {
             animation: islandBounce 1.5s infinite ease-in-out;
         }
-
         /* 六大冒险岛专属主题配色 */
         /* 1. 知识圣殿岛 (宝蓝) */
         .island-1 {
@@ -174,7 +155,6 @@
             border-color: #1e3a8a;
             box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
         }
-
         /* 2. 基础风暴岛 (翠绿) */
         .island-2 {
             background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
@@ -189,7 +169,6 @@
             border-color: #064e3b;
             box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
         }
-
         /* 3. 声调旋律岛 (暖黄琥珀) */
         .island-3 {
             background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
@@ -204,7 +183,6 @@
             border-color: #78350f;
             box-shadow: 0 6px 18px rgba(245, 158, 11, 0.4);
         }
-
         /* 4. 拼音符文岛 (梦幻紫) */
         .island-4 {
             background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
@@ -219,7 +197,6 @@
             border-color: #4c1d95;
             box-shadow: 0 6px 18px rgba(139, 92, 246, 0.4);
         }
-
         /* 5. 魔法自订岛 (玫瑰粉) */
         .island-5 {
             background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
@@ -234,7 +211,6 @@
             border-color: #881337;
             box-shadow: 0 6px 18px rgba(244, 63, 94, 0.4);
         }
-
         /* 6. 错题城堡岛 (珊瑚红) */
         .island-6 {
             background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
@@ -249,7 +225,6 @@
             border-color: #7f1d1d;
             box-shadow: 0 6px 18px rgba(239, 68, 68, 0.4);
         }
-
         /* 年级子选单容器 - 2列网格，精美且省空间 */
         .grade-menu-container {
             display: grid;
@@ -263,7 +238,6 @@
             margin-bottom: 5px;
             flex-shrink: 0;
         }
-
         .grade-btn {
             background-color: #ffffff;
             border: 2px solid #cbd5e1;
@@ -277,13 +251,11 @@
             color: #334155;
             flex-shrink: 0;
         }
-
         .grade-btn:hover, .grade-btn.active {
             border-color: #3b82f6;
             background-color: #eff6ff;
             color: #1d4ed8;
         }
-
         /* 右侧主要练习区 */
         .main-content {
             flex: 1;
@@ -298,7 +270,6 @@
             position: relative;
             box-sizing: border-box;
         }
-
         .game-container {
             background: white;
             padding: 40px;
@@ -310,35 +281,30 @@
             border: 4px solid #bbf7d0;
             box-sizing: border-box;
         }
-
         .home-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
-
         .home-title {
             font-size: 32px;
             color: #15803d;
             font-weight: bold;
             margin: 0;
         }
-
         .home-subtitle {
             font-size: 20px;
             color: #334155;
             line-height: 1.6;
             margin: 0;
         }
-
         .dragon-img {
             max-width: 100%;
             height: auto;
             border-radius: 16px;
             margin: 10px 0;
         }
-
         .start-btn {
             background-color: #f59e0b;
             color: white;
@@ -351,26 +317,22 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.15);
             transition: transform 0.2s, background-color 0.2s;
         }
-
         .start-btn:hover {
             background-color: #d97706;
             transform: scale(1.05);
         }
-
         .score-board {
             font-size: 18px;
             font-weight: bold;
             color: #16a34a;
             margin-bottom: 15px;
         }
-
         .mode-title {
             font-size: 18px;
             color: #666;
             font-weight: bold;
             margin-bottom: 15px;
         }
-
         .sub-menu-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -379,7 +341,6 @@
             max-width: 650px;
             margin-bottom: 20px;
         }
-
         .sub-btn {
             background-color: #ffffff;
             border: 3px solid #cbd5e1;
@@ -392,13 +353,11 @@
             color: #334155;
             line-height: 1.4;
         }
-
         .sub-btn:hover, .sub-btn.active {
             border-color: #3b82f6;
             background-color: #eff6ff;
             color: #1d4ed8;
         }
-
         .word-display-box {
             display: flex;
             align-items: center;
@@ -406,14 +365,12 @@
             gap: 15px;
             margin: 20px 0;
         }
-
         .word-display {
             font-size: 56px;
             font-weight: bold;
             color: #1e293b;
             letter-spacing: 2px;
         }
-
         .audio-btn {
             background-color: #0284c7;
             color: white;
@@ -429,12 +386,10 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             transition: transform 0.2s, background-color 0.2s;
         }
-
         .audio-btn:hover {
             background-color: #0369a1;
             transform: scale(1.1);
         }
-
         .input-box {
             font-size: 26px;
             padding: 12px 20px;
@@ -446,12 +401,10 @@
             box-sizing: border-box;
             transition: border-color 0.2s;
         }
-
         .input-box:focus {
             border-color: #4ade80;
             box-shadow: 0 0 10px rgba(74, 222, 128, 0.2);
         }
-
         .feedback {
             margin-top: 20px;
             font-size: 18px;
@@ -467,17 +420,14 @@
             flex-direction: column;
             gap: 8px;
         }
-
         .correct { 
             color: #15803d; 
             background-color: #dcfce7; 
         }
-
         .wrong { 
             color: #b91c1c; 
             background-color: #fee2e2; 
         }
-
         .analysis-box {
             background-color: #f8fafc;
             border: 2px dashed #94a3b8;
@@ -486,7 +436,6 @@
             margin: 20px 0;
             text-align: left;
         }
-
         .analysis-item {
             font-size: 16px;
             color: #334155;
@@ -494,12 +443,10 @@
             display: flex;
             justify-content: space-between;
         }
-
         .analysis-tag {
             font-weight: bold;
             color: #dc2626;
         }
-
         .custom-input-container {
             display: flex;
             flex-direction: column;
@@ -507,7 +454,6 @@
             align-items: center;
             margin-top: 15px;
         }
-
         .custom-textarea {
             width: 100%;
             height: 100px;
@@ -518,7 +464,6 @@
             box-sizing: border-box;
             resize: vertical;
         }
-
         .action-btn {
             background-color: #22c55e;
             color: white;
@@ -531,26 +476,42 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: background-color 0.2s;
         }
-
         .action-btn:hover {
             background-color: #16a34a;
         }
-
         .action-btn.secondary {
             background-color: #64748b;
         }
-
         .action-btn.secondary:hover {
             background-color: #475569;
         }
-
         .btn-group {
             display: flex;
             gap: 15px;
             justify-content: center;
             margin-top: 15px;
         }
-
+        .student-name-box {
+            background-color: #f0fdf4;
+            border: 2px dashed #86efac;
+            padding: 10px 16px;
+            border-radius: 12px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .student-name-input {
+            border: 2px solid #86efac;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 16px;
+            outline: none;
+            text-align: center;
+            width: 150px;
+            font-weight: bold;
+            color: #15803d;
+        }
         .hidden { 
             display: none !important; 
         }
@@ -559,7 +520,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-
     <!-- 左侧导航栏 -->
     <div class="sidebar">
         <h2 onclick="goHome()">
@@ -590,7 +550,6 @@
             <button class="grade-btn" onclick="selectGrade('WLP_中级')">WLP中级<span class="en-sub">WLP Inter.</span></button>
             <button class="grade-btn" onclick="selectGrade('WLP_高级')">WLP高级<span class="en-sub">WLP Advanced</span></button>
         </div>
-
         <!-- 2号岛：随机无声调 -->
         <button class="menu-btn island-card island-2" onclick="switchMode(1)">
             <div class="island-badge">🏝️ 2号岛 | Island 2</div>
@@ -602,7 +561,6 @@
                 </div>
             </div>
         </button>
-
         <!-- 3号岛：随机带声调 -->
         <button class="menu-btn island-card island-3" onclick="switchMode(2)">
             <div class="island-badge">🏝️ 3号岛 | Island 3</div>
@@ -614,7 +572,6 @@
                 </div>
             </div>
         </button>
-
         <!-- 4号岛：特定声韵母 -->
         <button class="menu-btn island-card island-4" onclick="switchMode(3)">
             <div class="island-badge">🏝️ 4号岛 | Island 4</div>
@@ -626,7 +583,6 @@
                 </div>
             </div>
         </button>
-
         <!-- 5号岛：自订字词 -->
         <button class="menu-btn island-card island-5" onclick="switchMode(5)">
             <div class="island-badge">🏝️ 5号岛 | Island 5</div>
@@ -638,7 +594,6 @@
                 </div>
             </div>
         </button>
-
         <!-- 6号岛：错题本 -->
         <button class="menu-btn island-card island-6" onclick="switchMode(4)">
             <div class="island-badge">🏝️ 6号岛 | Island 6</div>
@@ -651,7 +606,6 @@
             </div>
         </button>
     </div>
-
     <!-- 右侧内容区 -->
     <div class="main-content">
         <!-- 模式三的 6 大分类子菜单 -->
@@ -663,14 +617,17 @@
             <button class="sub-btn" onclick="switchSubCategory('houBi韻母')">4个后鼻韵母 :<br>ang eng ing ong</button>
             <button class="sub-btn" onclick="switchSubCategory('zhi整体')">16个整体认读音节 :<br>zhi chi shi ri zi ci si yi wu yu ye yue yuan yin yun ying</button>
         </div>
-
         <!-- 游戏核心卡片 -->
         <div class="game-container" id="game-card">
             
             <!-- 0. 首页欢迎界面 -->
             <div id="home-box" class="home-container">
                 <h1 class="home-title">🔥 欢迎来到拼音冒险岛 🔥</h1>
-                <p class="home-subtitle">
+                <div class="student-name-box">
+                    <label for="student-name" style="font-weight: bold; color: #166534;">👤 小朋友的名字：</label>
+                    <input type="text" id="student-name" class="student-name-input" placeholder="请输入姓名" oninput="updateStudentName(this.value)">
+                </div>
+                <p class="home-subtitle" id="welcome-message">
                     小朋友你准备好了吗？<br>
                     请拿出我们<b>火龙队</b>的<b>好奇</b>、<b>毅力</b>与<b>勇气</b>的特质，<br>
                     出发去冒险吧！✨
@@ -678,7 +635,6 @@
                 <img src="dragon.png" alt="火龙队特质" class="dragon-img">
                 <button class="start-btn" onclick="switchMode(1)">🚀 开始冒险！</button>
             </div>
-
             <!-- 6. 年级练习模式选择界面 -->
             <div id="grade-selection-box" class="hidden">
                 <h2 id="grade-title" style="color: #16a34a; margin-top:0;">📚 年级特训区</h2>
@@ -688,7 +644,6 @@
                     <button class="start-btn" style="background-color: #8b5cf6;" onclick="startGradePractice(true)">随机拼字练习 (加入声调)</button>
                 </div>
             </div>
-
             <!-- 5. 自订字词设置界面 -->
             <div id="custom-setup-box" class="hidden">
                 <h2 style="color: #16a34a; margin-top:0;">📝 自订字词特训区</h2>
@@ -698,7 +653,6 @@
                     <button class="action-btn" onclick="startCustomPractice()">✨ 保存并开始练习</button>
                 </div>
             </div>
-
             <!-- 4. 错题城堡设置与下载界面 -->
             <div id="wrong-setup-box" class="hidden">
                 <h2 style="color: #ef4444; margin-top:0; font-size: 26px;">🛡️ 错题城堡 (Mistake Castle)</h2>
@@ -708,7 +662,6 @@
                     <button class="start-btn" style="background-color: #f59e0b; font-size: 18px;" onclick="startWrongPractice()">🎮 开始线上错题练习</button>
                 </div>
             </div>
-
             <!-- 1. 答题进行中界面 -->
             <div id="quiz-box" class="hidden">
                 <div class="score-board">🚩 进度：第 <span id="current-index">1</span> / <span id="total-index">10</span> 题 | 正确：<span id="score">0</span> 题</div>
@@ -722,19 +675,16 @@
                 <input type="text" id="pinyin-input" class="input-box" placeholder="在这里输入拼音..." autocomplete="off">
                 <div id="feedback" class="feedback"></div>
             </div>
-
             <!-- 2. 10 题挑战结束结算与分析界面 -->
             <div id="result-box" class="hidden">
                 <h2 style="font-size: 28px; color: #16a34a; margin-bottom: 5px;">🏆 挑战完成！</h2>
                 <div style="font-size: 22px; font-weight: bold; margin: 10px 0; color: #334155;">
                     本次成绩：<span id="final-score" style="color: #2563eb; font-size: 32px;">0/10</span>
                 </div>
-
                 <div class="analysis-box">
                     <h3 style="margin-top:0; color:#1e293b; font-size:18px;">📊 学习大冒险分析报告：</h3>
                     <div id="analysis-content"></div>
                 </div>
-
                 <p style="font-size: 18px; color: #475569; margin-bottom: 15px;">要继续挑战下一轮吗？</p>
                 <div class="btn-group">
                     <button class="action-btn" onclick="restartChallenge()">是 (继续挑战)</button>
@@ -743,7 +693,6 @@
             </div>
         </div>
     </div>
-
 <script>
     // 基础分类表，用于分析拼音要素
     const pinyinCategories = {
@@ -754,7 +703,6 @@
         dan: ["a", "o", "e", "i", "u", "ü", "v"],
         shengmu: ["b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w"]
     };
-
     // 完整的年级限定词库列表
     const rawGradeWords = {
         G1: [
@@ -782,7 +730,6 @@
             "各种各样", "工作", "内容", "负责", "稳定", "工资", "福利", "认为", "特点", "生活", "容易", "保险", "退休金", "条件", "社会地位", "面子", "收入", "年轻人", "兴趣", "越来越", "对（人）来说", "首先", "再来", "最后", "总之", "对", "来说", "分享", "发生", "趣事", "特别", "紧张", "赶快", "装忙", "得", "办法", "冷静", "注意", "自然", "着", "结果", "笑", "把", "一...就...", "聊", "被", "地形", "盆地", "四周", "高山", "包围", "平原", "丘陵", "河流", "潮湿", "闷热", "冬天", "凉爽", "舒服", "居住", "成为", "饮食", "气候", "文化", "社交", "代表", "生活方式", "悠闲", "放松", "竹林", "来自", "改变", "流行", "媒体", "报道", "选择", "据说", "假新闻", "有精神", "记者", "采访", "发现", "现象", "然而", "夸张", "其实", "平时", "专家", "可能", "当成", "一般"
         ]
     };
-
     // 动态拼接累加各年级的词库数组（避免重复字词）
     function getCumulativeGradeList(gradeKey) {
         let combined = [];
@@ -805,11 +752,10 @@
         }
         return Array.from(new Set(combined)); // 过滤重复项
     }
-
     let activeGradeList = [];
     let selectedGradeName = "";
     let userCustomList = [];
-
+    let studentName = "";
     const categoryBank = {
         "sh聲母": [
             { word: "爸", ans: "b" }, { word: "妈", ans: "m" }, { word: "大", ans: "d" }, { word: "土", ans: "t" },
@@ -836,7 +782,6 @@
             { word: "圆", ans: "yuan" }, { word: "音", ans: "yin" }, { word: "云", ans: "yun" }, { word: "影", ans: "ying" }
         ]
     };
-
     let currentMode = 0;
     let currentSubCategory = "sh聲母";
     let currentQuestion = {};
@@ -847,7 +792,6 @@
     let wrongCount = 0;
     let currentSessionErrors = [];
     let isGradeWithTone = false;
-
     // DOM 元素
     const homeBoxEl = document.getElementById('home-box');
     const customSetupBoxEl = document.getElementById('custom-setup-box');
@@ -870,11 +814,54 @@
     const analysisContentEl = document.getElementById('analysis-content');
     const customWordsInputEl = document.getElementById('custom-words-input');
     const gradeTitleEl = document.getElementById('grade-title');
+    const studentNameInputEl = document.getElementById('student-name');
+    const welcomeMessageEl = document.getElementById('welcome-message');
+
+    // === 新增：本地存储持久化操作函数 ===
+    function loadStorageData() {
+        try {
+            const savedWrong = localStorage.getItem('pinyin_wrong_list');
+            if (savedWrong) wrongList = JSON.parse(savedWrong);
+            const savedName = localStorage.getItem('pinyin_student_name');
+            if (savedName) {
+                studentName = savedName;
+                if (studentNameInputEl) studentNameInputEl.value = studentName;
+            }
+        } catch(e) {
+            console.error('读取 LocalStorage 失败:', e);
+        }
+    }
+
+    function saveWrongListToStorage() {
+        try {
+            localStorage.setItem('pinyin_wrong_list', JSON.stringify(wrongList));
+        } catch(e) {
+            console.error('保存 LocalStorage 失败:', e);
+        }
+    }
+
+    function updateStudentName(val) {
+        studentName = val.trim();
+        try {
+            localStorage.setItem('pinyin_student_name', studentName);
+        } catch(e) {
+            console.error('保存姓名失败:', e);
+        }
+        updateWelcomeMessage();
+    }
+
+    function updateWelcomeMessage() {
+        const nameText = studentName ? `<strong style="color: #15803d; font-size: 22px;">${studentName}</strong> ` : '';
+        welcomeMessageEl.innerHTML = `
+            ${nameText}小朋友你准备好了吗？<br>
+            请拿出我们<b>火龙队</b>的<b>好奇</b>、<b>毅力</b>与<b>勇气</b>的特质，<br>
+            出发去冒险吧！✨
+        `;
+    }
 
     function toggleGradeMenu() {
         gradeSubMenuEl.classList.toggle('hidden');
     }
-
     function selectGrade(gradeKey) {
         activeGradeList = getCumulativeGradeList(gradeKey);
         
@@ -885,17 +872,14 @@
         
         selectedGradeName = displayNames[gradeKey];
         gradeTitleEl.innerText = `📚 ${selectedGradeName} 特训区`;
-
         const btns = document.querySelectorAll('.grade-btn');
         btns.forEach(btn => {
             if (btn.innerText.includes(selectedGradeName)) btn.classList.add('active');
             else btn.classList.remove('active');
         });
-
         const menuBtns = document.querySelectorAll('.menu-btn');
         menuBtns.forEach(btn => btn.classList.remove('active'));
         if (menuBtns[0]) menuBtns[0].classList.add('active');
-
         // 隐藏其他界面，显示年级模式选择界面
         homeBoxEl.classList.add('hidden');
         customSetupBoxEl.classList.add('hidden');
@@ -904,7 +888,6 @@
         resultBoxEl.classList.add('hidden');
         gradeSelectionBoxEl.classList.remove('hidden');
     }
-
     function startGradePractice(withTone) {
         isGradeWithTone = withTone;
         currentMode = 6; // 年级专属练习模式
@@ -912,12 +895,10 @@
         modeTitleEl.innerText = `${selectedGradeName} - ${withTone ? '随机拼字练习 (加入声调)' : '随机拼字练习 (无声调)'}`;
         maxQuestionsPerRound = 10;
         totalIndexEl.innerText = maxQuestionsPerRound;
-
         gradeSelectionBoxEl.classList.add('hidden');
         resetChallenge();
         nextQuestion();
     }
-
     function speakCurrentWord() {
         if ('speechSynthesis' in window && currentQuestion.word) {
             window.speechSynthesis.cancel();
@@ -927,7 +908,6 @@
             window.speechSynthesis.speak(msg);
         }
     }
-
     function getPinyin(word, withTone) {
         if (typeof pinyinPro !== 'undefined') {
             if (withTone) {
@@ -938,7 +918,6 @@
         }
         return "";
     }
-
     function resetChallenge() {
         score = 0;
         totalAsked = 0;
@@ -951,7 +930,6 @@
         quizBoxEl.classList.remove('hidden');
         resultBoxEl.classList.add('hidden');
     }
-
     function goHome() {
         currentMode = 0;
         const buttons = document.querySelectorAll('.menu-btn');
@@ -965,23 +943,20 @@
         gradeSelectionBoxEl.classList.add('hidden');
         wrongSetupBoxEl.classList.add('hidden');
         homeBoxEl.classList.remove('hidden');
+        updateWelcomeMessage();
     }
-
     function switchMode(modeNum) {
         currentMode = modeNum;
         
         const buttons = document.querySelectorAll('.menu-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
-
         if (modeNum === 1) buttons[1].classList.add('active');
         if (modeNum === 2) buttons[2].classList.add('active');
         if (modeNum === 3) buttons[3].classList.add('active');
         if (modeNum === 5) buttons[4].classList.add('active');
         if (modeNum === 4) buttons[5].classList.add('active');
-
         if (modeNum === 3) subMenuEl.classList.remove('hidden');
         else subMenuEl.classList.add('hidden');
-
         if (modeNum === 5) {
             homeBoxEl.classList.add('hidden');
             quizBoxEl.classList.add('hidden');
@@ -991,7 +966,6 @@
             customSetupBoxEl.classList.remove('hidden');
             return;
         }
-
         if (modeNum === 4) {
             homeBoxEl.classList.add('hidden');
             quizBoxEl.classList.add('hidden');
@@ -999,7 +973,6 @@
             gradeSelectionBoxEl.classList.add('hidden');
             customSetupBoxEl.classList.add('hidden');
             wrongSetupBoxEl.classList.remove('hidden');
-
             if (wrongList.length === 0) {
                 wrongStatusInfoEl.innerHTML = `
                     <div style="background-color: #dcfce7; border: 2px solid #86efac; border-radius: 16px; padding: 20px; margin: 15px 0;">
@@ -1024,40 +997,32 @@
             }
             return;
         }
-
         if (modeNum === 1) modeTitleEl.innerText = "随机拼字练习（无声调）";
         if (modeNum === 2) modeTitleEl.innerText = "随机拼字练习（加入声调，例: ni3hao3）";
         if (modeNum === 3) modeTitleEl.innerText = "特定声母、韵母练习";
         if (modeNum === 4) modeTitleEl.innerText = "错题本（加强练习）";
-
         maxQuestionsPerRound = 10;
         totalIndexEl.innerText = maxQuestionsPerRound;
-
         resetChallenge();
         nextQuestion();
     }
-
     function startCustomPractice() {
         const rawText = customWordsInputEl.value.trim();
         if (!rawText) {
             alert('请先输入要练习的字词喔！');
             return;
         }
-
         userCustomList = rawText.split(/[\s,，\n]+/).filter(w => w.length > 0);
         if (userCustomList.length === 0) {
             alert('未能识别有效的字词，请重新输入！');
             return;
         }
-
         modeTitleEl.innerText = "📝 自订字词特训";
         maxQuestionsPerRound = Math.min(10, userCustomList.length);
         totalIndexEl.innerText = maxQuestionsPerRound;
-
         resetChallenge();
         nextQuestion();
     }
-
     function startWrongPractice() {
         if (wrongList.length === 0) {
             alert('目前没有错题记录喔！');
@@ -1067,22 +1032,20 @@
         modeTitleEl.innerText = "🛡️ 错题本（加强练习）";
         maxQuestionsPerRound = Math.min(10, wrongList.length);
         totalIndexEl.innerText = maxQuestionsPerRound;
-
         wrongSetupBoxEl.classList.add('hidden');
         resetChallenge();
         nextQuestion();
     }
 
+    // === 更新：带有名字、日期及自适应高度的 PDF 导出 ===
     function downloadWrongListPDF() {
         if (!wrongList || wrongList.length === 0) {
             alert('目前没有错题记录可以下载喔！');
             return;
         }
-
         const container = document.createElement('div');
         container.style.padding = '30px';
         container.style.fontFamily = "'PingFang SC', 'Microsoft YaHei', sans-serif";
-
         let itemsHtml = wrongList.map(item => `
             <div style="border: 2px solid #fca5a5; background-color: #fef2f2; border-radius: 16px; padding: 18px 12px; text-align: center; box-sizing: border-box;">
                 <div style="font-size: 25px; font-weight: bold; color: #1e293b; line-height: 1.3;">${item.word}</div>
@@ -1090,10 +1053,14 @@
             </div>
         `).join('');
 
+        const displayName = studentName ? `${studentName} 小朋友的` : '';
+        const todayStr = new Date().toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+        const fileName = studentName ? `${studentName}_拼音错题本.pdf` : '拼音错题本.pdf';
+
         container.innerHTML = `
             <div style="text-align: center; margin-bottom: 25px; border-bottom: 3px solid #fca5a5; padding-bottom: 15px;">
-                <h1 style="font-size: 28px; color: #991b1b; margin: 0 0 8px 0;">🛡️ 拼音错题本</h1>
-                <p style="font-size: 14px; color: #64748b; margin: 0;">共 ${wrongList.length} 道错题 | 导出时间：${new Date().toLocaleDateString()}</p>
+                <h1 style="font-size: 28px; color: #991b1b; margin: 0 0 8px 0;">🛡️ ${displayName}拼音错题本</h1>
+                <p style="font-size: 14px; color: #64748b; margin: 0;">共 ${wrongList.length} 道错题 | 生成日期：${todayStr}</p>
             </div>
             <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
                 ${itemsHtml}
@@ -1103,7 +1070,7 @@
         if (typeof html2pdf !== 'undefined') {
             const opt = {
                 margin:       10,
-                filename:     '拼音错题本.pdf',
+                filename:     fileName,
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -1116,7 +1083,7 @@
                 <html>
                 <head>
                     <meta charset="utf-8">
-                    <title>拼音错题本</title>
+                    <title>${displayName}拼音错题本</title>
                     <style>
                         body { font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; margin: 0; padding: 20px; }
                     </style>
@@ -1153,13 +1120,11 @@
         resetChallenge();
         nextQuestion();
     }
-
     function nextQuestion() {
         if (totalAsked >= maxQuestionsPerRound) {
             showResult();
             return;
         }
-
         totalAsked++;
         currentIndexEl.innerText = totalAsked;
         wrongCount = 0;
@@ -1167,7 +1132,6 @@
         inputEl.disabled = false;
         feedbackEl.className = 'feedback';
         feedbackEl.innerHTML = '';
-
         if (currentMode === 1 || currentMode === 2) {
             const defaultList = getCumulativeGradeList('G1');
             const r = Math.floor(Math.random() * defaultList.length);
@@ -1201,13 +1165,10 @@
             const r = Math.floor(Math.random() * wrongList.length);
             currentQuestion = Object.assign({}, wrongList[r]);
         }
-
         wordTargetEl.innerText = currentQuestion.word;
         inputEl.focus();
-
         setTimeout(speakCurrentWord, 200);
     }
-
     function analyzePinyinCategory(item) {
         if (item.category) {
             const mapName = {
@@ -1220,9 +1181,7 @@
             };
             return mapName[item.category] || '拼音基础';
         }
-
         const cleanAns = item.answer.replace(/[0-9]/g, '').toLowerCase();
-
         for (let py of pinyinCategories.zhi) {
             if (cleanAns.includes(py)) return "整体认读音节";
         }
@@ -1240,16 +1199,15 @@
         }
         return "声母/拼读";
     }
-
     function showResult() {
         quizBoxEl.classList.add('hidden');
         resultBoxEl.classList.remove('hidden');
         finalScoreEl.innerText = `${score}/${maxQuestionsPerRound}`;
-
+        const namePrefix = studentName ? `<strong>${studentName}</strong> ` : '';
         if (currentSessionErrors.length === 0) {
             analysisContentEl.innerHTML = `
                 <p style="color: #16a34a; font-weight: bold; font-size: 18px; margin: 10px 0;">
-                    🌟 哇！太厉害了！全部答对！<br>
+                    🌟 哇！太厉害了！${namePrefix}全部答对！<br>
                     火龙队的好奇与勇气带你完美通关！保持这个状态继续加油！
                 </p>
             `;
@@ -1259,11 +1217,9 @@
                 let cat = analyzePinyinCategory(item);
                 stats[cat] = (stats[cat] || 0) + 1;
             });
-
             let sortedCats = Object.keys(stats).sort((a,b) => stats[b] - stats[a]);
             let topWeakness = sortedCats[0];
-
-            let html = `<p style="font-size: 15px; color: #475569; margin-bottom: 10px;">本次练习中，小朋友主要在以下方面需要再加深印象：</p>`;
+            let html = `<p style="font-size: 15px; color: #475569; margin-bottom: 10px;">本次练习中，${namePrefix}小朋友主要在以下方面需要再加深印象：</p>`;
             
             sortedCats.forEach(cat => {
                 html += `
@@ -1273,30 +1229,24 @@
                     </div>
                 `;
             });
-
             html += `
                 <p style="background-color: #fef3c7; color: #b45309; padding: 10px; border-radius: 10px; font-weight: bold; margin-top: 15px; font-size: 15px;">
-                    💡 小建议：小朋友在 <span style="text-decoration: underline; color: #d97706;">【${topWeakness}】</span> 上需要再加强喔！<br>
+                    💡 小建议：${namePrefix}小朋友在 <span style="text-decoration: underline; color: #d97706;">【${topWeakness}】</span> 上需要再加强喔！<br>
                     可以利用左侧的「特定声母、韵母练习」专门多练练它！
                 </p>
             `;
-
             analysisContentEl.innerHTML = html;
         }
     }
-
     function restartChallenge() {
         resetChallenge();
         nextQuestion();
     }
-
     inputEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             const userInput = inputEl.value.toLowerCase().trim();
             const targetAnswer = currentQuestion.answer.toLowerCase().trim();
-
             const normalize = (str) => str.replace(/ü/g, 'v');
-
             if (normalize(userInput) === normalize(targetAnswer)) {
                 if (wrongCount >= 3) {
                     feedbackEl.className = 'feedback correct';
@@ -1305,14 +1255,13 @@
                     setTimeout(nextQuestion, 1200);
                     return;
                 }
-
                 feedbackEl.className = 'feedback correct';
                 feedbackEl.innerText = '🎉 太棒了！答对啰！';
                 score++;
                 scoreEl.innerText = score;
-
                 if (currentMode === 4) {
                     wrongList = wrongList.filter(item => !(item.word === currentQuestion.word && item.answer === currentQuestion.answer));
+                    saveWrongListToStorage();
                 }
                 
                 inputEl.disabled = true;
@@ -1320,11 +1269,9 @@
             } else {
                 wrongCount++;
                 inputEl.value = '';
-
                 if (wrongCount === 1) {
                     currentSessionErrors.push(currentQuestion);
                 }
-
                 if (wrongCount < 3) {
                     feedbackEl.className = 'feedback wrong';
                     feedbackEl.innerText = `❌ 答错啰 (${wrongCount}/3 次)，再试一次看看！`;
@@ -1335,16 +1282,18 @@
                         <div style="font-size: 15px; color: #7f1d1d;">✏️ 请看着上面的正确答案，在框内打一次并按 Enter 练习：</div>
                     `;
                     inputEl.focus();
-
                     const alreadyIn = wrongList.some(item => item.word === currentQuestion.word && item.answer === targetAnswer);
                     if (!alreadyIn && currentMode !== 4) {
                         wrongList.push({ word: currentQuestion.word, answer: targetAnswer, category: currentQuestion.category });
+                        saveWrongListToStorage();
                     }
                 }
             }
         }
     });
 
+    // 初始化加载数据并显示首页
+    loadStorageData();
     goHome();
 </script>
 </body>
