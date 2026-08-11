@@ -428,7 +428,6 @@
         .hidden { 
             display: none !important; 
         }
-
         /* 名字输入区块 */
         .name-section {
             background: #ffffff;
@@ -549,7 +548,6 @@
             </div>
         </button>
     </div>
-
     <!-- 右侧内容区 -->
     <div class="main-content">
         <!-- 模式三的 6 大分类子菜单 -->
@@ -561,7 +559,6 @@
             <button class="sub-btn" onclick="switchSubCategory('houBi韻母')">4个后鼻韵母 :<br>ang eng ing ong</button>
             <button class="sub-btn" onclick="switchSubCategory('zhi整体')">16个整体认读音节 :<br>zhi chi shi ri zi ci si yi wu yu ye yue yuan yin yun ying</button>
         </div>
-
         <!-- 游戏核心卡片 -->
         <div class="game-container" id="game-card">
             
@@ -573,9 +570,7 @@
                     请拿出我们<b>火龙队</b>的<b>好奇</b>、<b>毅力</b>与<b>勇气</b>的特质，<br>
                     出发去冒险吧！✨
                 </p>
-
                 <img src="dragon.png" alt="火龙队特质" class="dragon-img">
-
                 <!-- 名字输入与单一启动按钮 -->
                 <div class="name-section">
                     <label for="player-name-input" style="font-size: 16px; font-weight: bold; color: #15803d;">
@@ -585,7 +580,6 @@
                     <button class="start-btn" onclick="handleStartJourney()">🌟 开启我的冒险之旅！</button>
                 </div>
             </div>
-
             <!-- 6. 年级练习模式选择界面 -->
             <div id="grade-selection-box" class="hidden">
                 <h2 id="grade-title" style="color: #16a34a; margin-top:0;">📚 年级特训区</h2>
@@ -595,7 +589,6 @@
                     <button class="start-btn" style="background-color: #8b5cf6;" onclick="startGradePractice(true)">随机拼字练习 (加入声调)</button>
                 </div>
             </div>
-
             <!-- 5. 自订字词设置界面 -->
             <div id="custom-setup-box" class="hidden">
                 <h2 style="color: #16a34a; margin-top:0;">📝 自订字词特训区</h2>
@@ -605,7 +598,6 @@
                     <button class="action-btn" onclick="startCustomPractice()">✨ 保存并开始练习</button>
                 </div>
             </div>
-
             <!-- 4. 错题城堡设置与下载界面 -->
             <div id="wrong-setup-box" class="hidden">
                 <h2 style="color: #ef4444; margin-top:0; font-size: 26px;">🛡️ 错题城堡 (Mistake Castle)</h2>
@@ -615,7 +607,6 @@
                     <button class="start-btn" style="background-color: #f59e0b; font-size: 18px;" onclick="startWrongPractice()">🎮 开始线上错题练习</button>
                 </div>
             </div>
-
             <!-- 1. 答题进行中界面 (单项显示) -->
             <div id="quiz-box" class="hidden">
                 <div class="score-board">🚩 进度：第 <span id="current-index">1</span> / <span id="total-index">10</span> 题 | 正确：<span id="score">0</span> 题</div>
@@ -629,13 +620,11 @@
                 <input type="text" id="pinyin-input" class="input-box" placeholder="在这里输入拼音..." autocomplete="off">
                 <div id="feedback" class="feedback"></div>
             </div>
-
             <!-- 2. 10 题挑战结束结算与分析界面 -->
             <div id="result-box" class="hidden">
                 <h2 style="font-size: 28px; color: #16a34a; margin-bottom: 5px;">🏆 挑战完成！</h2>
                 
                 <div id="result-player-name" style="font-size: 24px; font-weight: bold; color: #166534; margin: 8px 0;"></div>
-
                 <div style="font-size: 22px; font-weight: bold; margin: 10px 0; color: #334155;">
                     本次成绩：<span id="final-score" style="color: #2563eb; font-size: 32px;">0/10</span>
                 </div>
@@ -649,13 +638,10 @@
                     <button class="action-btn secondary" onclick="goHome()">否 (返回主页)</button>
                 </div>
             </div>
-
         </div>
     </div>
-
 <script>
     let playerName = "";
-
     // 本地错题库初始化
     let wrongList = [];
     try {
@@ -666,7 +652,6 @@
     } catch (e) {
         console.error("无法读取 LocalStorage", e);
     }
-
     function saveWrongListToStorage() {
         try {
             localStorage.setItem('pinyin_wrong_list', JSON.stringify(wrongList));
@@ -674,14 +659,12 @@
             console.error("无法保存至 LocalStorage", e);
         }
     }
-
     // 绑定 Enter 键触发开启冒险
     function handleNameEnter(event) {
         if (event.key === 'Enter') {
             handleStartJourney();
         }
     }
-
     // 点击「开启我的冒险之旅！」按钮
     function handleStartJourney() {
         const inputVal = document.getElementById('player-name-input').value.trim();
@@ -691,14 +674,12 @@
         // 直接开启默认的模式1（2号岛：基础风暴岛）
         switchMode(1);
     }
-
     function checkAndSyncPlayerName() {
         const inputVal = document.getElementById('player-name-input').value.trim();
         if (inputVal) {
             playerName = inputVal;
         }
     }
-
     const pinyinCategories = {
         zhi: ["zhi", "chi", "shi", "ri", "zi", "ci", "si", "yi", "wu", "yu", "ye", "yue", "yuan", "yin", "yun", "ying"],
         houBi: ["ang", "eng", "ing", "ong"],
@@ -707,7 +688,6 @@
         dan: ["a", "o", "e", "i", "u", "ü", "v"],
         shengmu: ["b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x", "zh", "ch", "sh", "r", "z", "c", "s", "y", "w"]
     };
-
     const rawGradeWords = {
         G1: ["眼睛", "鼻子", "嘴巴", "手", "头", "脚", "耳朵", "爷爷", "奶奶", "爸爸", "妈妈", "哥哥", "姐姐", "弟弟", "妹妹", "我", "你", "爱", "家", "苹果", "草莓", "香蕉", "葡萄", "桔子", "梨", "西瓜", "红色", "黄色", "蓝色", "绿色", "紫色", "桔色", "水果", "喜欢", "不喜欢", "牛", "马", "兔", "羊", "鸡", "狗", "猪", "老虎", "狮子", "斑马", "长颈鹿", "猴子", "熊猫", "大象", "动物", "吃", "个", "只", "抱", "喝", "鸟", "猫", "是", "不是", "的", "早上", "我们", "他", "她", "你好", "星期", "要", "上学", "一年级", "唱歌", "画画", "读书", "写字", "开心", "叫", "岁", "生日", "中文", "和", "条", "教室", "中美国际学校", "这是", "美术", "音乐", "体育", "操场", "们", "也", "都", "叔叔", "伯伯", "姑姑", "外婆", "外公", "舅舅", "阿姨", "他们", "新年", "在", "非常", "去", "出门", "看", "公园", "祝", "快乐", "朋友", "同学", "漂亮", "送给", "卡片", "做", "过来", "剪", "贴", "跑", "明天", "今天", "下午", "帮", "月饼", "中秋节", "放", "希望", "自己", "想要", "玩具", "张", "把", "第", "步", "颜色", "影子", "左", "右", "前", "后", "像", "黑", "跟着", "大", "小", "中", "上", "下", "木", "水", "火", "土", "年", "画", "月", "课", "学校", "家人", "爷", "奶", "弟", "妹", "有", "会", "写字", "小狗", "吗", "好", "说", "笔", "红", "绿", "金", "桔"],
         G2: ["等不及", "游戏", "带", "肚子", "让", "跟", "新", "年级", "城市", "从……来", "吃饭", "时候", "坐", "学校", "一样", "那", "朋友", "大家", "知道", "中国", "美国", "地方", "发生", "请", "一起", "跑来跑去", "送", "回家", "陆地", "洲", "北美洲", "南美洲", "水牛", "狮子", "熊猫", "地形", "森林", "沙漠", "河流", "湖", "岛", "草原", "顶楼", "楼房", "呢", "休息", "容易", "跌倒", "同意", "形状", "旧金山", "加州", "再", "首先", "食物", "有雾", "夏天", "冬天", "语言", "事情", "欺负", "伤害", "抓住", "最后", "帮助", "努力", "以前", "买笔", "握着", "神奇", "善良", "画画", "许多", "爱你", "想一想", "玩", "看", "说", "还有", "因为", "真的", "这里", "现在", "很多", "交朋友", "星期", "昨天", "写", "高兴", "最少", "海洋", "地球", "东西南北", "不同", "高山", "小河", "草地", "美丽", "是谁", "住在", "很快", "没有", "声音", "爬上爬下", "地图", "然后", "拿起来", "很热", "太冷", "哪里", "非常", "白云", "有趣", "周末", "庆祝", "里面", "伤心", "害怕", "读书", "怎么", "担心", "为什么", "一支笔", "如果", "毛笔", "可是", "每天", "头", "条", "匹"],
@@ -718,7 +698,6 @@
         WLP_中级: ["白色", "红色", "金色", "黄色", "蓝色", "黑色", "穿", "戴", "带", "一件", "一条", "一双", "一副", "一顶", "一只", "衣服", "衬衫", "雨衣", "毛衣", "运动衣", "裤子", "裙子", "长", "短", "如果...就...", "买", "请问", "高", "矮", "所以", "不过", "合适", "适合", "穿衣风格", "号", "多少钱", "什么样", "身材", "欢迎", "找", "试", "显", "参加", "简单", "舒服", "时尚", "流行", "刷卡", "付现", "手机", "支付", "校园", "全新", "比", "对面", "旁边", "前面", "后面", "外面", "里面", "左边", "右边", "附近", "这里", "又...又...", "除了...以外", "就", "商场", "大学", "高中", "操场", "体育馆", "教室", "图书馆", "自习室", "办公室", "会议室", "走廊", "楼梯", "电梯", "一所", "一间", "一栋", "美食", "特色", "计划", "品尝", "感到", "兴奋", "新奇", "偏", "尤其", "让", "清淡", "新鲜", "除此之外", "方便", "当地", "美味", "热乎乎", "体验", "出发", "旅行社", "搭", "车站", "出租车", "酒店", "行李", "上网", "查", "完", "餐馆", "欣赏", "风景", "像", "拍照", "游船", "交通", "地图", "行程", "安排", "坐", "不但", "而且", "没错"],
         WLP_高级: ["各种各样", "工作", "内容", "负责", "稳定", "工资", "福利", "认为", "特点", "生活", "容易", "保险", "退休金", "条件", "社会地位", "面子", "收入", "年轻人", "兴趣", "越来越", "对（人）来说", "首先", "再来", "最后", "总之", "对", "来说", "分享", "发生", "趣事", "特别", "紧张", "赶快", "装忙", "得", "办法", "冷静", "注意", "自然", "着", "结果", "笑", "把", "一...就...", "聊", "被", "地形", "盆地", "四周", "高山", "包围", "平原", "丘陵", "河流", "潮湿", "闷热", "冬天", "凉爽", "舒服", "居住", "成为", "饮食", "气候", "文化", "社交", "代表", "生活方式", "悠闲", "放松", "竹林", "来自", "改变", "流行", "媒体", "报道", "选择", "据说", "假新闻", "有精神", "记者", "采访", "发现", "现象", "然而", "夸张", "其实", "平时", "专家", "可能", "当成", "一般"]
     };
-
     function getCumulativeGradeList(gradeKey) {
         let combined = [];
         if (gradeKey === 'G1') combined = [...rawGradeWords.G1];
@@ -731,7 +710,6 @@
         else if (gradeKey === 'WLP_高级') combined = [...rawGradeWords.WLP_初级, ...rawGradeWords.WLP_中级, ...rawGradeWords.WLP_高级];
         return Array.from(new Set(combined));
     }
-
     let activeGradeList = [];
     let selectedGradeName = "";
     let userCustomList = [];
@@ -770,7 +748,6 @@
     let wrongCount = 0;
     let currentSessionErrors = [];
     let isGradeWithTone = false;
-
     const homeBoxEl = document.getElementById('home-box');
     const customSetupBoxEl = document.getElementById('custom-setup-box');
     const gradeSelectionBoxEl = document.getElementById('grade-selection-box');
@@ -792,12 +769,10 @@
     const analysisContentEl = document.getElementById('analysis-content');
     const customWordsInputEl = document.getElementById('custom-words-input');
     const gradeTitleEl = document.getElementById('grade-title');
-
     function toggleGradeMenu() {
         checkAndSyncPlayerName();
         gradeSubMenuEl.classList.toggle('hidden');
     }
-
     function selectGrade(gradeKey) {
         checkAndSyncPlayerName();
         activeGradeList = getCumulativeGradeList(gradeKey);
@@ -826,7 +801,6 @@
         resultBoxEl.classList.add('hidden');
         gradeSelectionBoxEl.classList.remove('hidden');
     }
-
     function startGradePractice(withTone) {
         isGradeWithTone = withTone;
         currentMode = 6;
@@ -837,7 +811,6 @@
         resetChallenge();
         nextQuestion();
     }
-
     function speakCurrentWord() {
         if ('speechSynthesis' in window && currentQuestion.word) {
             window.speechSynthesis.cancel();
@@ -847,7 +820,6 @@
             window.speechSynthesis.speak(msg);
         }
     }
-
     function getPinyin(word, withTone) {
         if (typeof pinyinPro !== 'undefined') {
             if (withTone) {
@@ -858,7 +830,6 @@
         }
         return "";
     }
-
     function resetChallenge() {
         score = 0;
         totalAsked = 0;
@@ -871,7 +842,6 @@
         resultBoxEl.classList.add('hidden');
         quizBoxEl.classList.remove('hidden');
     }
-
     function goHome() {
         currentMode = 0;
         const buttons = document.querySelectorAll('.menu-btn');
@@ -886,7 +856,6 @@
         wrongSetupBoxEl.classList.add('hidden');
         homeBoxEl.classList.remove('hidden');
     }
-
     function switchMode(modeNum) {
         checkAndSyncPlayerName();
         currentMode = modeNum;
@@ -898,10 +867,8 @@
         if (modeNum === 3) buttons[3].classList.add('active');
         if (modeNum === 5) buttons[4].classList.add('active');
         if (modeNum === 4) buttons[5].classList.add('active');
-
         if (modeNum === 3) subMenuEl.classList.remove('hidden');
         else subMenuEl.classList.add('hidden');
-
         if (modeNum === 5) {
             homeBoxEl.classList.add('hidden');
             quizBoxEl.classList.add('hidden');
@@ -911,7 +878,6 @@
             customSetupBoxEl.classList.remove('hidden');
             return;
         }
-
         if (modeNum === 4) {
             homeBoxEl.classList.add('hidden');
             quizBoxEl.classList.add('hidden');
@@ -944,7 +910,6 @@
             }
             return;
         }
-
         if (modeNum === 1) modeTitleEl.innerText = "随机拼字练习（无声调）";
         if (modeNum === 2) modeTitleEl.innerText = "随机拼字练习（加入声调，例: ni3hao3）";
         if (modeNum === 3) modeTitleEl.innerText = "特定声母、韵母练习";
@@ -954,7 +919,6 @@
         resetChallenge();
         nextQuestion();
     }
-
     function startCustomPractice() {
         const rawText = customWordsInputEl.value.trim();
         if (!rawText) {
@@ -972,7 +936,6 @@
         resetChallenge();
         nextQuestion();
     }
-
     function startWrongPractice() {
         if (wrongList.length === 0) {
             alert('目前没有错题记录喔！');
@@ -986,7 +949,6 @@
         resetChallenge();
         nextQuestion();
     }
-
     function downloadWrongListPDF() {
         if (!wrongList || wrongList.length === 0) {
             alert('目前没有错题记录可以下载喔！');
@@ -994,7 +956,6 @@
         }
         checkAndSyncPlayerName();
         const displayName = playerName ? `${playerName} 的` : '';
-
         const container = document.createElement('div');
         container.style.padding = '30px';
         container.style.fontFamily = "'PingFang SC', 'Microsoft YaHei', sans-serif";
@@ -1041,7 +1002,6 @@
             printWin.document.close();
         }
     }
-
     function switchSubCategory(catName) {
         currentSubCategory = catName;
         const subBtns = document.querySelectorAll('.sub-btn');
@@ -1060,7 +1020,6 @@
         resetChallenge();
         nextQuestion();
     }
-
     function nextQuestion() {
         if (totalAsked >= maxQuestionsPerRound) {
             showResult();
@@ -1073,7 +1032,6 @@
         inputEl.disabled = false;
         feedbackEl.className = 'feedback';
         feedbackEl.innerHTML = '';
-
         if (currentMode === 1 || currentMode === 2) {
             const defaultList = getCumulativeGradeList('G1');
             const r = Math.floor(Math.random() * defaultList.length);
@@ -1111,7 +1069,6 @@
         inputEl.focus();
         setTimeout(speakCurrentWord, 200);
     }
-
     function analyzePinyinCategory(item) {
         if (item.category) {
             const mapName = {
@@ -1132,7 +1089,6 @@
         for (let py of pinyinCategories.dan) if (cleanAns.includes(py)) return "单韵母";
         return "声母/拼读";
     }
-
     function showResult() {
         quizBoxEl.classList.add('hidden');
         resultBoxEl.classList.remove('hidden');
@@ -1145,7 +1101,6 @@
         } else {
             resultPlayerNameEl.classList.add('hidden');
         }
-
         finalScoreEl.innerText = `${score}/${maxQuestionsPerRound}`;
         if (currentSessionErrors.length === 0) {
             analysisContentEl.innerHTML = `
@@ -1161,7 +1116,10 @@
                 stats[cat] = (stats[cat] || 0) + 1;
             });
             let sortedCats = Object.keys(stats).sort((a,b) => stats[b] - stats[a]);
-            let topWeakness = sortedCats[0];
+            
+            // 拼接所有有錯誤的類別（用半角空格分隔）
+            let allWeaknesses = sortedCats.join(' ');
+            
             let displayName = playerName ? playerName : '';
             let namePrefixStr = displayName ? `${displayName}，` : '';
             let html = `<p style="font-size: 15px; color: #475569; margin-bottom: 10px;">本次练习中，${namePrefixStr}主要在以下方面需要再加深印象：</p>`;
@@ -1176,19 +1134,17 @@
             });
             html += `
                 <p style="background-color: #fef3c7; color: #b45309; padding: 10px; border-radius: 10px; font-weight: bold; margin-top: 15px; font-size: 15px;">
-                    💡 小建议：${namePrefixStr}在 <span style="text-decoration: underline; color: #d97706;">【${topWeakness}】</span> 上需要再加强喔！<br>
+                    💡 小建议：${namePrefixStr}在 ${allWeaknesses} 上需要再加强喔！<br>
                     可以利用左侧的「特定声母、韵母练习」专门多练练它！
                 </p>
             `;
             analysisContentEl.innerHTML = html;
         }
     }
-
     function restartChallenge() {
         resetChallenge();
         nextQuestion();
     }
-
     inputEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             const userInput = inputEl.value.toLowerCase().trim();
@@ -1226,7 +1182,7 @@
                     feedbackEl.className = 'feedback wrong';
                     feedbackEl.innerHTML = `
                         <div>💡 答错 3 次啰！正确答案是: <strong>${targetAnswer}</strong></div>
-                        <div style="font-size: 15px; color: #7f1d1d;">✏️ 请看着上面的正确答案，在框内打一次并按 Enter 练习：</div>
+                        <div style="font-size: 15px; color: #7f1d1d;">✏️ 请看着上面的正确答案，在框内打一次并按 Enter练习：</div>
                     `;
                     inputEl.focus();
                     const alreadyIn = wrongList.some(item => item.word === currentQuestion.word && item.answer === targetAnswer);
@@ -1238,7 +1194,6 @@
             }
         }
     });
-
     // 默认进入主页
     goHome();
 </script>
