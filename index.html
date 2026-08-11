@@ -193,7 +193,7 @@
             color: #1d4ed8;
         }
         
-        /* 修正右側區域，防止上方溢出被遮擋 */
+        /* 修正右侧区域，防止上方溢出被遮挡 */
         .main-content {
             flex: 1;
             display: flex;
@@ -429,7 +429,7 @@
             display: none !important; 
         }
 
-        /* 名字輸入區塊 */
+        /* 名字输入区块 */
         .name-section {
             background: #ffffff;
             border: 2px dashed #4ade80;
@@ -581,7 +581,7 @@
                     <label for="player-name-input" style="font-size: 16px; font-weight: bold; color: #15803d;">
                         输入你的名字，开启专属探索之旅吧！
                     </label>
-                    <input type="text" id="player-name-input" class="name-input" placeholder="例如：OW" onkeydown="handleNameEnter(event)">
+                    <input type="text" id="player-name-input" class="name-input" onkeydown="handleNameEnter(event)">
                     <button class="start-btn" onclick="handleStartJourney()">🌟 开启我的冒险之旅！</button>
                 </div>
             </div>
@@ -1162,8 +1162,9 @@
             });
             let sortedCats = Object.keys(stats).sort((a,b) => stats[b] - stats[a]);
             let topWeakness = sortedCats[0];
-            let namePrefix = playerName ? `${playerName} 小朋友` : '小朋友';
-            let html = `<p style="font-size: 15px; color: #475569; margin-bottom: 10px;">本次练习中，${namePrefix}主要在以下方面需要再加深印象：</p>`;
+            let displayName = playerName ? playerName : '';
+            let namePrefixStr = displayName ? `${displayName}，` : '';
+            let html = `<p style="font-size: 15px; color: #475569; margin-bottom: 10px;">本次练习中，${namePrefixStr}主要在以下方面需要再加深印象：</p>`;
             
             sortedCats.forEach(cat => {
                 html += `
@@ -1175,7 +1176,7 @@
             });
             html += `
                 <p style="background-color: #fef3c7; color: #b45309; padding: 10px; border-radius: 10px; font-weight: bold; margin-top: 15px; font-size: 15px;">
-                    💡 小建议：${namePrefix}在 <span style="text-decoration: underline; color: #d97706;">【${topWeakness}】</span> 上需要再加强喔！<br>
+                    💡 小建议：${namePrefixStr}在 <span style="text-decoration: underline; color: #d97706;">【${topWeakness}】</span> 上需要再加强喔！<br>
                     可以利用左侧的「特定声母、韵母练习」专门多练练它！
                 </p>
             `;
